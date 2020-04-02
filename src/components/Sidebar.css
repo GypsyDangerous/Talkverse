@@ -40,6 +40,12 @@
     margin-top: 20px;
 }
 
+.contact p{
+    min-height: 15px;
+    /* overflow-y: visible !important; */
+    line-height: .95;
+}
+
  .sidepanel #profile.expanded .wrap i.expand-button {
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
@@ -104,7 +110,7 @@
 
  .sidepanel #profile .wrap p {
     float: left;
-    margin-left: 15px;
+    margin-left: 15px !important;
 }
 
 @media screen and (max-width: 735px) {
@@ -293,7 +299,7 @@
     margin-bottom: 6px;
     background: #32465a;
     border-radius: 3px;
-    color: var(--text-color);
+    color: var(--sender-text-color);
     padding: 7px;
     width: calc(100% - 43px);
 }
@@ -327,7 +333,7 @@
     width: calc(100%);
     border: none;
     background: #32465a;
-    color: var(--text-color);
+    color: var(--sender-text-color);
 }
 
  .sidepanel #search input:focus {
@@ -472,7 +478,7 @@
 }
 
  .sidepanel #contacts ul li.contact .wrap .meta .preview {
-    margin: 5px 0 0 0;
+    margin: 5px 0 0 0 !important;
     padding: 0 0 1px;
     font-weight: 400;
     white-space: nowrap;

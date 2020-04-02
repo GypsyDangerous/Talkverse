@@ -83,7 +83,7 @@
     background-color: rgba(0, 0, 0, 0.3);
 }
 
- .content .messages ul li {
+ .content .messages  li {
     display: inline-block;
     clear: both;
     float: left;
@@ -92,37 +92,41 @@
     font-size: 0.9em;
 }
 
- .content .messages ul li:nth-last-child(1) {
+ .content .messages  li:nth-last-child(1) {
     margin-bottom: 20px;
 }
 
- .content .messages ul li.sent img {
+ .content .messages  li.sent img {
     margin: 6px 8px 0 0;
 }
 
- .content .messages ul li.sent p {
+ .content .messages  li.sent p {
     background: #435f7a;
     color: var(--text-color);
 }
 
- .content .messages ul li.replies img {
+.content .messages li p {
+    box-shadow: var(--sender-box-shadow);
+ }
+
+ .content .messages  li.replies img {
     float: right;
     margin: 6px 0 0 8px;
 }
 
- .content .messages ul li.replies p {
+ .content .messages  li.replies p {
     background: var(--accent-color);
     float: right;
     color: var(--sender-text-color)
 }
 
- .content .messages ul li img {
+ .content .messages  li img {
     width: 44px;
     border-radius: 50%;
     float: left;
 }
 
- .content .messages ul li p {
+ .content .messages  li p {
     display: inline-block;
     padding: 10px 15px;
     border-radius: 20px;
@@ -131,7 +135,7 @@
 }
 
 @media screen and (min-width: 735px) {
-     .content .messages ul li p {
+     .content .messages  li p {
         max-width: 300px;
     }
 }
@@ -141,8 +145,9 @@
     bottom: 0;
     width: 100%;
     z-index: 99;
-    height: 40px;
+    /* height: 40px; */
 }
+
 
  .content .message-input .wrap {
     position: relative;
@@ -157,7 +162,7 @@
     font-size: 0.8em;
     color: var(--text-color);
     background: var(--accent-color);
-    min-height: 41px;
+    min-height: 48px;
 }
 
 @media screen and (max-width: 735px) {
@@ -176,10 +181,11 @@
     z-index: 4;
     font-size: 1.1em;
     color: var(--sender-text-color);
-    opacity: .5;
+    /* opacity: .5; */
+    background: var(--base-color);
     cursor: pointer;
     min-width: 40px;
-    min-height: 41px;
+    min-height: 48px;
     font-size: 24px;
     display: flex;
     justify-content: center;
@@ -208,4 +214,9 @@
 
  .content .message-input .wrap button:focus {
     outline: none;
+}
+
+.messages  {
+    display: flex;
+    flex-direction: column-reverse;
 }

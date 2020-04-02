@@ -71,7 +71,7 @@ const Conversation = () => {
             <div class="message-input">
                 <div class="wrap">
                     <input type="text" placeholder="Write your message..." />
-                    <div class="attachment-container"><i class="fa fa-paperclip attachment" aria-hidden="true"></i></div>
+                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
                     <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
