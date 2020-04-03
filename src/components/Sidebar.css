@@ -32,7 +32,7 @@
 }
 
  .sidepanel #profile.expanded .wrap {
-    height: 210px;
+    height: 250px;
     line-height: initial;
 }
 
@@ -406,12 +406,12 @@
     background: #32465a;
 }
 
- .sidepanel #contacts ul li.contact.active {
+ .sidepanel #contacts ul a.active li.contact {
     background: #32465a;
     border-right: 5px solid #435f7a;
 }
 
- .sidepanel #contacts ul li.contact.active span.contact-status {
+ .sidepanel #contacts ul a.active li.contact span.contact-status {
     border: 2px solid #32465a !important;
 }
 
@@ -465,6 +465,7 @@
 
  .sidepanel #contacts ul li.contact .wrap .meta {
     padding: 5px 0 0 0;
+    color: var(--text-color)
 }
 
 @media screen and (max-width: 735px) {
@@ -488,6 +489,7 @@
     -o-transition: 1s all ease;
     -webkit-transition: 1s all ease;
     transition: 1s all ease;
+    
 }
 
  .sidepanel #contacts ul li.contact .wrap .meta .preview span {
@@ -560,4 +562,8 @@
      .sidepanel #bottom-bar button span {
         display: none;
     }
+}
+
+a.normalize{
+    text-decoration: none !important;
 }

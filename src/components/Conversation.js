@@ -17,62 +17,62 @@ const ConversationHeader = props => {
 
 const MessageInput = props => {
     return (
-        <div class="message-input">
-            <div class="wrap">
+        <div className="message-input">
+            <div className="wrap">
                 <input type="text" placeholder="Write your message..." />
-                <div class="attachment-container"><i class="fa fa-paperclip attachment" aria-hidden="true"></i></div>
-                <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                <div className="attachment-container"><i className="fa fa-paperclip attachment" aria-hidden="true"></i></div>
+                <button className="submit"><i className="fa fa-paper-plane" aria-hidden="true"></i></button>
             </div>
         </div>
     )
 }
 
 
-const Conversation = () => {
+const Conversation = props => {
     return (
         <div className="content">
             <ConversationHeader/>
-            <div class="messages">
+            {!props.empty && <div className="messages">
                 <ul>
-                    <li class="sent">
+                    <li className="sent">
                         <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
                         <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
                     </li>
-                    <li class="replies">
+                    <li className="replies">
                         <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                         <p>When you're backed against the wall, break the god damn thing down.</p>
                     </li>
-                    <li class="replies">
+                    <li className="replies">
                         <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                         <p>Excuses don't win championships.</p>
                     </li>
-                    <li class="sent">
+                    <li className="sent">
                         <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
                         <p>Oh yeah, did Michael Jordan tell you that?</p>
                     </li>
-                    <li class="replies">
+                    <li className="replies">
                         <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                         <p>No, I told him that.</p>
                     </li>
-                    <li class="replies">
+                    <li className="replies">
                         <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                         <p>What are your choices when someone puts a gun to your head?</p>
                     </li>
-                    <li class="sent">
+                    <li className="sent">
                         <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
                         <p>What are you talking about? You do what they say or they shoot you.</p>
                     </li>
-                    <li class="replies">
+                    <li className="replies">
                         <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                         <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
                     </li>
                 </ul>
-            </div>
-            <div class="message-input">
-                <div class="wrap">
+            </div>}
+            <div className="message-input">
+                <div className="wrap">
                     <input type="text" placeholder="Write your message..." />
-                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                    <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    <i className="fa fa-paperclip attachment" aria-hidden="true"></i>
+                    <button className="submit"><i className="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>

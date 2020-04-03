@@ -5,10 +5,17 @@ import {AuthContext } from "../contexts/AuthContext"
 const ProtectedRoute = ({component: RouteComponent, ...rest}) => {
     
     const {currentUser} = useContext(AuthContext)
+    const [render, setRender] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setRender(true)
+        }, 500)
+    }, [])
 
     return (
         <>
-            {<Route
+            {render && <Route
                 {...rest}
                 render={routeProps => 
                     !!currentUser ? (

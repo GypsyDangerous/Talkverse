@@ -7,10 +7,14 @@ export const AuthProvider = props => {
 
     const [currentUser, setCurrentUser] = useState()
 
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
+    const handleAuth = async () => {
+        await firebase.auth().onAuthStateChanged(user => {
             setCurrentUser(user)
         })
+    }
+
+    useEffect(async () => {
+        handleAuth()
     }, [])
 
     return (

@@ -1,14 +1,17 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import Conversation from './Conversation';
-import { Route } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router';
 
 const Home = props => {
     return (
-        <div>
+        <>
             <Sidebar toggleColorMode={props.toggleColorMode}/>
-            <Route><Conversation /></Route>
-        </div>
+            <Switch>
+                <Route path="/conversations/:id" component={Conversation}/>
+                <Route path="/conversations" render={props => <Conversation empty {...props}/>}/>
+            </Switch>
+        </>
     );
 }
 

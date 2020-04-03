@@ -27,22 +27,21 @@ function App() {
     setIsDark(mode === "true")
   }, [])
 
-  useEffect(() => {
-    const socket = socketIOClient(endPoint)
+  // useEffect(() => {
+  //   const socket = socketIOClient(endPoint)
 
-    
 
-  }, [])
+  // }, [])
 
   return (
     <Router>
       
         <div className={`app ${isDark ? "app--dark" : ""}`}>
           <Switch>
-            <ProtectedRoute exact path="/" component={() => <Home toggleColorMode={toggleColorMode}/>}/>
+            <ProtectedRoute path="/conversations" component={() => <Home toggleColorMode={toggleColorMode}/>}/>
             <Route path="/login" component={LoginPage}/>
             <Route path="/register" component={RegisterPage}/>
-            <Redirect to="/"/>
+            <Redirect to="/conversations"/>
           </Switch>
         </div>
     </Router>
