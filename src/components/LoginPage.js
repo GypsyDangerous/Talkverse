@@ -6,8 +6,6 @@ import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons"
 import { faEye, faEyeSlash, faUsers } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, Redirect } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
 
 
 const LoginPage = props => {
@@ -17,21 +15,14 @@ const LoginPage = props => {
     const [showPassword, setShowPassword] = useState()
     const [remember, setRemember] = useState(false)
 
-    const {currentUser} = useContext(AuthContext)
-
-    if (currentUser) {
+    if (firebase.auth.currentUser) {
         return <Redirect to="/" />
     } 
 
     const formSubmitHandler = async e => {
         e.preventDefault()
         try{
-            if (remember) {
-                await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            } else {
-                await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
-            }
-            await firebase.auth().signInWithEmailAndPassword(email, password)
+            await firebase.login(email, password)
             props.history.push("/")
         }catch(err){
 
@@ -39,22 +30,20 @@ const LoginPage = props => {
     }
 
     const handleGoolgeSignIn = async e => {
-        if (remember) {
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        } else {
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
-        }
-        const provider = new firebase.auth.GoogleAuthProvider();
-        const result = await firebase.auth().signInWithPopup(provider)
+        const provider = new firebase.app.auth.GoogleAuthProvider();
+        const result = await firebase.auth.signInWithPopup(provider)
         const user = result.user
+        firebase.auth.currentUser.updateProfile({
+            displayName: user.displayName
+        })
         try{
-            await firebase.firestore().collection("users").doc(user.uid).update({
+            await firebase.db.collection("users").doc(user.uid).update({
                 name: user.displayName,
                 uid: user.uid,
                 profilePicture: user.photoURL
             })
         }catch(err){
-            await firebase.firestore().collection("users").doc(user.uid).set({
+            await firebase.db.collection("users").doc(user.uid).set({
                 name: user.displayName,
                 uid: user.uid,
                 profilePicture: user.photoURL
@@ -72,18 +61,14 @@ const LoginPage = props => {
                             <h5 className="card-title text-center">Sign In</h5>
                             <form className="form-signin" onSubmit={formSubmitHandler}>
                                 <div className="form-label-group">
-                                    <input type="email" id="inputEmail" value={email} onChange={e => setEmail(e.target.value)} className="form-control" placeholder="Email address" required autofocus />
+                                    <input type="email" id="inputEmail" value={email} onChange={e => setEmail(e.target.value)} className="form-control" placeholder="Email address" required autoFocus />
                                     <label htmlFor="inputEmail">Email address</label>
                                 </div>
                                 <div className="form-label-group">
                                     <input type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} id="inputPassword" className="form-control" placeholder="Password" required />
                                     <label htmlFor="inputPassword">Password</label>
-                                    <input type="checkbox" id="showPassword" checked={showPassword} onChange={e => setShowPassword(e.target.checked)} />
+                                    <input type="checkbox" id="showPassword" checked={showPassword} value={showPassword} onChange={e => setShowPassword(e.target.checked)} />
                                     <label htmlFor="showPassword" className="show-password" style={{ cursor: "pointer" }}><FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} /></label>
-                                </div>
-                                <div className="custom-control custom-checkbox mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="customCheck1" checked={remember} onChange={e => setRemember(e.target.checked)} />
-                                    <label className="custom-control-label" htmlFor="customCheck1">Remember Me</label>
                                 </div>
                                 <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
                                 <hr className="my-4" />

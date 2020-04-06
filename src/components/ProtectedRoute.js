@@ -1,30 +1,20 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Route, Redirect} from "react-router-dom"
-import {AuthContext } from "../contexts/AuthContext"
+import firebase from "../firebase"
 
 const ProtectedRoute = ({component: RouteComponent, ...rest}) => {
-    
-    const {currentUser} = useContext(AuthContext)
-    const [render, setRender] = useState(false)
-
-    useEffect(() => {
-        setTimeout(() => {
-            setRender(true)
-        }, 500)
-    }, [])
-
     return (
         <>
-            {render && <Route
+            <Route
                 {...rest}
                 render={routeProps => 
-                    !!currentUser ? (
+                    !!firebase.auth.currentUser ? (
                         <RouteComponent {...routeProps}/>
                     ) : (
                         <Redirect to="/login"/>
                     )
                 }
-            />}
+            />
         </>
     );
 }

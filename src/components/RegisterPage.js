@@ -20,7 +20,7 @@ const RegisterPage = props => {
             await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             const user = await firebase.auth().createUserWithEmailAndPassword(email, password)
             console.log(user.user.uid)
-            firebase.firestore().collection("users").doc(user.user.uid).set({
+            firebase.db.collection("users").doc(user.user.uid).set({
                 name: userName,
                 uid: user.user.uid
             })
@@ -34,7 +34,7 @@ const RegisterPage = props => {
         const provider = new firebase.auth.GoogleAuthProvider();
         const result = await firebase.auth().signInWithPopup(provider)
         const user = result.user
-        firebase.firestore().collection("users").doc(user.uid).set({
+        firebase.db.collection("users").doc(user.uid).set({
             name: user.displayName,
             uid: user.uid,
             profilePicture: user.photoURL
@@ -51,7 +51,7 @@ const RegisterPage = props => {
                         <h5 className="card-title text-center">Sign up</h5>
                         <form className="form-signin" onSubmit={formSubmitHandler}>
                             <div className="form-label-group">
-                                <input type="text" id="inputUsername" value={userName} onChange={e => setUserName(e.target.value)} className="form-control" placeholder="Email address" required autofocus />
+                                <input type="text" id="inputUsername" value={userName} onChange={e => setUserName(e.target.value)} className="form-control" placeholder="Email address" required autoFocus />
                                 <label htmlFor="inputUsername">Username</label>
                             </div>
                             <div className="form-label-group">
@@ -63,10 +63,6 @@ const RegisterPage = props => {
                                 <label htmlFor="inputPassword">Password</label>
                                 <input type="checkbox" id="showPassword" checked={showPassword} onChange={e => setShowPassword(e.target.checked)} />
                                 <label htmlFor="showPassword" className="show-password" style={{ cursor: "pointer" }}><FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} /></label>
-                            </div>
-                            <div className="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                <label className="custom-control-label" htmlFor="customCheck1">Remember Me</label>
                             </div>
                             <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign up</button>
                             <hr className="my-4" />

@@ -1,10 +1,27 @@
 import React from 'react';
 import "./Conversation.css"
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import { deepOrange } from '@material-ui/core/colors';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    orange: {
+        color: theme.palette.getContrastText(deepOrange[500]),
+        backgroundColor: deepOrange[500],
+    },
+}));
 
 const ConversationHeader = props => {
     return (
         <div className="contact-profile">
-            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+            {/* <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" /> */}
+            <Avatar src="http://emilcarlsson.se/assets/harveyspcter.png" alt="H" className={`conversation-header-img`}/>
             <p>Harvey Specter</p>
             <div className="social-media">
                 <i className="fa fa-facebook" aria-hidden="true"></i>

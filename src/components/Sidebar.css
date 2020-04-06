@@ -29,11 +29,18 @@
         padding: 5px 0 0 0;
         background: #32465a;
     }
+
+    #profile-img {
+      display: flex !important;
+      justify-content: center;
+      align-items: center;  
+      /* margin: 0 !important; */
+      margin-left: 3px !important;
+    }
 }
 
  .sidepanel #profile.expanded .wrap {
-    height: 250px;
-    line-height: initial;
+    height: 270px;
 }
 
  .sidepanel #profile.expanded .wrap p {
@@ -46,11 +53,11 @@
     line-height: .95;
 }
 
- .sidepanel #profile.expanded .wrap i.expand-button {
-    -moz-transform: scaleY(-1);
+.sidepanel #profile.expanded .wrap i.expand-button {
+    /* -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
-    -webkit-transform: scaleY(-1);
-    transform: scaleY(-1);
+    -webkit-transform: scaleY(-1); */
+    transform: rotate(540deg);
     filter: FlipH;
     -ms-filter: "FlipH";
 }
@@ -75,7 +82,6 @@
     width: 50px;
     border-radius: 50%;
     padding: 3px;
-    border: 2px solid #e74c3c;
     height: auto;
     float: left;
     cursor: pointer;
@@ -92,25 +98,42 @@
     }
 }
 
- .sidepanel #profile .wrap img.online {
-    border: 2px solid #2ecc71;
+.sidepanel #profile .wrap #profile-img {
+    width: fit-content;
+    padding: 3px;
+    border-radius: 50%;
+    display: inline-block;
 }
 
- .sidepanel #profile .wrap img.away {
-    border: 2px solid #f1c40f;
+.sidepanel #profile .wrap .online {
+    border: var(--status-border-size) solid #2ecc71;
 }
 
- .sidepanel #profile .wrap img.busy {
-    border: 2px solid #e74c3c;
+ .sidepanel #profile .wrap .away {
+    border: var(--status-border-size) solid #f1c40f;
 }
 
- .sidepanel #profile .wrap img.offline {
-    border: 2px solid #95a5a6;
+ .sidepanel #profile .wrap .busy {
+    border: var(--status-border-size) solid #e74c3c;
 }
 
- .sidepanel #profile .wrap p {
-    float: left;
+ .sidepanel #profile .wrap .offline {
+    border: var(--status-border-size) solid #95a5a6;
+}
+
+ .sidepanel #profile .wrap .user {
+    float: right;
     margin-left: 15px !important;
+    display: flex;
+    justify-content: space-around;
+    width: 200px;
+    align-items: center;
+}
+
+@media screen and (max-width: 834px){
+    .sidepanel #profile .wrap .user{
+        width: 160px;
+    }
 }
 
 @media screen and (max-width: 735px) {
@@ -121,10 +144,10 @@
 
  .sidepanel #profile .wrap i.expand-button {
     float: right;
-    margin-top: 23px;
     font-size: 0.8em;
     cursor: pointer;
     color: var(--text-color);
+    transition: .3s ease-in-out
 }
 
 @media screen and (max-width: 735px) {
@@ -138,7 +161,7 @@
     opacity: 0;
     visibility: hidden;
     width: 150px;
-    margin: 70px 0 0 0;
+    margin: 20px 0 0 0;
     border-radius: 6px;
     z-index: 99;
     line-height: initial;
@@ -159,12 +182,12 @@
  .sidepanel #profile .wrap #status-options.active {
     opacity: 1;
     visibility: visible;
-    margin: 75px 0 0 0;
+    margin: 25px 0 0 0;
 }
 
 @media screen and (max-width: 735px) {
      .sidepanel #profile .wrap #status-options.active {
-        margin-top: 62px;
+        margin-top: 17px;
     }
 }
 
@@ -226,7 +249,7 @@
     position: absolute;
     width: 14px;
     height: 14px;
-    margin: -3px 0 0 -3px;
+    margin: -2px 0 0 -2px;
     background: transparent;
     border-radius: 50%;
     z-index: 0;
@@ -240,7 +263,7 @@
 }
 
  .sidepanel #profile .wrap #status-options ul li p {
-    padding-left: 12px;
+    padding-left: 22px;
 }
 
 @media screen and (max-width: 735px) {
@@ -282,7 +305,7 @@
 }
 
  .sidepanel #profile .wrap #expanded {
-    padding: 100px 0 0 0;
+    padding: 50px 0 0 0;
     display: block;
     line-height: initial !important;
 }

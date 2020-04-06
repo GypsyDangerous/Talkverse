@@ -7,25 +7,33 @@ const Contact = props => {
     const [conversation, setConversation] = useState()
     const [recent, setRecent] = useState()
 
+    console.log(props)
+
     const getContact = async () => {
-        const id = props.contact.userid
-        const db = firebase.firestore()
-        const user = await db.collection("users").doc(id).get()
-        setContact(user.data())
-        
+        const id = props.contact
+        const db = firebase.db
+        db.collection("users").doc(id).onSnapshot(snapshot => {
+            setContact(snapshot.data())
+        })
+
+    }
+
+    const getConversation = async () => {
+        firebase.db.collection("conversations").onSnapshot(snapshot => {
+            const thisConv = snapshot.docs.map(doc => doc.data()).filter(conv => conv.members.includes(props.contact) && conv.members.includes(firebase.auth.currentUser.uid))
+            setConversation(thisConv[0])
+        })
     }
 
     useEffect(() => {
         getContact()
+        getConversation()
     }, [])
 
     useEffect(() => {
-        setConversation(props.contact.conversation)
-    }, [props])
-
-    useEffect(() => {
-        if(conversation)
-        setRecent(conversation[conversation.length-1])
+        if(conversation){
+            setRecent(conversation.messages[conversation.messages.length - 1])
+        }
     }, [conversation])
 
     return (
@@ -35,7 +43,7 @@ const Contact = props => {
                 <img src={contact.profilePicture} alt="" />
                 <div className="meta">
                     <p className="name">{contact.name}</p>
-                    <p className="preview">{recent.sent && <span>You:</span>} {recent.body}</p>
+                    <p className="preview">{recent.sender === firebase.auth.currentUser.uid && <span>You:</span>} {recent.body}</p>
                 </div>
             </div>}
         </li> 

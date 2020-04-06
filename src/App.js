@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
 import './App.css';
-import {AuthContext} from "./contexts/AuthContext"
 import socketIOClient from "socket.io-client"
 import firebase from "./firebase"
 import { BrowserRouter as Router, Route, Redirect, Switch, Link } from "react-router-dom"
@@ -13,8 +12,7 @@ function App() {
 
   const [isDark, setIsDark] = useState(false)
   const [endPoint, setEndpoint] = useState("http://localhost:4000/")
-
-  const {setCurrentUser} = useContext(AuthContext)
+  const [firebaseInit, setFirebaseInit] = useState(false);
 
   const toggleColorMode = () => {
     const not = !isDark
@@ -27,15 +25,21 @@ function App() {
     setIsDark(mode === "true")
   }, [])
 
+  useEffect(() => {
+    (async () => {
+      const result = await firebase.isInitialized();
+      setFirebaseInit(result)
+    })()
+  })
+
   // useEffect(() => {
   //   const socket = socketIOClient(endPoint)
 
 
   // }, [])
 
-  return (
+  return firebaseInit !== false ? (
     <Router>
-      
         <div className={`app ${isDark ? "app--dark" : ""}`}>
           <Switch>
             <ProtectedRoute path="/conversations" component={() => <Home toggleColorMode={toggleColorMode}/>}/>
@@ -45,7 +49,7 @@ function App() {
           </Switch>
         </div>
     </Router>
-  );
+  ) : <div id="loader">Loading</div>
 }
 
 export default App;
