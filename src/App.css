@@ -60,6 +60,14 @@ body{
     }
 } */
 
+.display-name{
+    text-transform: capitalize;
+}
+
 p{
     margin: 0px !important;
+}
+
+button, input{
+    outline: none !important;
 }

@@ -77,8 +77,8 @@ const LoginPage = props => {
                                 <button onClick={handleGoolgeSignIn} className="btn btn-lg btn-google btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGoogle} className="logo mr-2" /> Sign in with Google</button>
                                 <button className="btn btn-lg btn-github btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGithub} className="logo mr-2" />Sign in with Github</button>
                                 <div className="form__links">
-                                    <span>Need an account? <Link to="/auth/register">Register</Link></span>
-                                    <Link to="/auth/register">Change Password</Link>
+                                    <span>Need an account? <Link to="/register">Register</Link></span>
+                                    <Link to="/register">Change Password</Link>
                                 </div>
                             </div>
                         </div>

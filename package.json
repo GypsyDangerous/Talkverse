@@ -14,12 +14,16 @@
     "@testing-library/user-event": "^7.2.1",
     "boostrap": "^2.0.0",
     "bootstrap": "^4.4.1",
+    "emojione": "^4.5.0",
+    "emojione-assets": "^4.5.0",
     "firebase": "^7.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-loader": "^2.4.7",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
+    "react-scroll": "^1.7.16",
     "socket.io-client": "^2.3.0"
   },
   "scripts": {

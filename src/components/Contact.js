@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import firebase from "../firebase"
+import { NavLink } from 'react-router-dom';
 
 const Contact = props => {
     // console.log(props)
     const [contact, setContact] = useState()
     const [conversation, setConversation] = useState()
     const [recent, setRecent] = useState()
-
-    console.log(props)
 
     const getContact = async () => {
         const id = props.contact
@@ -31,22 +30,28 @@ const Contact = props => {
     }, [])
 
     useEffect(() => {
-        if(conversation){
-            setRecent(conversation.messages[conversation.messages.length - 1])
-        }
+        try{
+            if(conversation){
+                setRecent(conversation.messages[conversation.messages.length - 1])
+            }
+        }catch(err){}
     }, [conversation])
 
     return (
-        <li className="contact">
-            {contact && <div className="wrap">
-                <span className={`contact-status ${contact.status}`}></span>
-                <img src={contact.profilePicture} alt="" />
-                <div className="meta">
-                    <p className="name">{contact.name}</p>
-                    <p className="preview">{recent.sender === firebase.auth.currentUser.uid && <span>You:</span>} {recent.body}</p>
-                </div>
-            </div>}
-        </li> 
+        <>
+            {conversation && <NavLink to={"/conversations/" + conversation.id} activeClassName="active" className="normalize">
+                <li className="contact">
+                    {contact && <div className="wrap">
+                        <span className={`contact-status ${contact.status}`}></span>
+                        <img src={contact.profilePicture} alt={contact.name + " Profile Picture"} />
+                        <div className="meta">
+                            <p className="display-name name">{contact.name}</p>
+                            <p className="preview">{recent && <>{recent.sender === firebase.auth.currentUser.uid && <span>You:</span>} {recent.body}</>}</p>
+                        </div>
+                    </div>}
+                </li> 
+            </NavLink>}
+        </>
     );
 }
 

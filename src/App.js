@@ -7,11 +7,11 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import Home from './components/Home';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import Loader from "react-loader"
 
 function App() {
 
   const [isDark, setIsDark] = useState(false)
-  const [endPoint, setEndpoint] = useState("http://localhost:4000/")
   const [firebaseInit, setFirebaseInit] = useState(false);
 
   const toggleColorMode = () => {
@@ -19,6 +19,7 @@ function App() {
     setIsDark(mode => !mode)
     localStorage.setItem("color mode", not)
   }
+
 
   useEffect(() => {
     const mode = localStorage.getItem("color mode")
@@ -32,24 +33,38 @@ function App() {
     })()
   })
 
-  // useEffect(() => {
-  //   const socket = socketIOClient(endPoint)
-
-
-  // }, [])
-
   return firebaseInit !== false ? (
     <Router>
-        <div className={`app ${isDark ? "app--dark" : ""}`}>
+        <main className={`app ${isDark ? "app--dark" : ""}`}>
           <Switch>
-            <ProtectedRoute path="/conversations" component={() => <Home toggleColorMode={toggleColorMode}/>}/>
+            <ProtectedRoute path="/conversations" component={() => <Home colorMode={isDark} toggleColorMode={toggleColorMode}/>}/>
             <Route path="/login" component={LoginPage}/>
             <Route path="/register" component={RegisterPage}/>
             <Redirect to="/conversations"/>
           </Switch>
-        </div>
+        </main>
     </Router>
-  ) : <div id="loader">Loading</div>
+  ) : <div className={`app ${isDark ? "app--dark" : ""}`}><Loader
+    loaded={false}
+    lines={13}
+    length={20}
+    width={10}
+    radius={30}
+    corners={1}
+    rotate={0}
+    direction={1}
+    color={isDark ? "#fff" : "#000"}
+    speed={1}
+    trail={60}
+    shadow={true}
+    hwaccel={true}
+    className="spinner"
+    zIndex={2e9}
+    top="50%"
+    left="50%"
+    scale={2.0}
+    loadedClassName="loadedContent"
+  /></div>
 }
 
 export default App;
