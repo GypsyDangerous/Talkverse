@@ -76,7 +76,7 @@ const MessageInput = props => {
             mid: [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join(''),
             sentAt: Date.now()
         }
-        
+
         await firebase.db.collection("conversations").doc(props.conversation.uuid).collection("messages").add(newMessage)
         setMessage("")
         setFiles([])
@@ -109,7 +109,12 @@ const MessageInput = props => {
 
 const Message = ({message, index, conversation, previous}) => {
     const [anchorEl, setAnchorEl] = useState(null)
+    const [multi, setMulti] = useState(false)
    
+    useEffect(() => {
+        setMulti((previous.sender !== message.sender || index - 1 < 0))
+    }, [previous, message, index])
+
     const handleClose = () => {
         setAnchorEl(null)
     }
@@ -130,11 +135,11 @@ const Message = ({message, index, conversation, previous}) => {
 
     return (
         <li className={message.sender === firebase.auth.currentUser.uid ? "sent" : "replies"} >
-            {(previous.sender !== message.sender || index-1 < Infinity) && 
+            {multi && 
             <div className="senderimg">
                 <Avatar alt={message?.sender?.toUpperCase()} src={message.senderImg} /> 
             </div>}
-            <p style={{fontSize: message?.body?.match(regex)?.length === message?.body?.length/2 ? "38px": ""}}> 
+            <p className={multi?"":"nth-msg"} style={{fontSize: message?.body?.match(regex)?.length === message?.body?.length/2 ? "38px": ""}}> 
                 <Linkify componentDecorator={componentDecorator}>{message.body}</Linkify>
                 {message?.attachments?.map((file, i) => (
                     <>
@@ -191,7 +196,7 @@ const Conversation = (props => {
                 <ConversationHeader convInfo={other}/>
                 <div ref={contentRef} className="messages">
                     <ul> {messages?.map((message, i) => (
-                        <Message message={message} key={i} previous={messages[Math.max(i-1, 0)]} index={i} conversation={conv}/>
+                        <Message message={message} key={i} previous={messages[Math.max(i-1, 0)]} next={messages[i+1]} index={i} conversation={conv}/>
                     ))
                     }
                     </ul>

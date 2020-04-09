@@ -102,7 +102,7 @@
 .content .messages li {
     clear: both;
     float: left;
-    margin: 5px;
+    margin: 2px 5px;
     width: calc(100% - 25px);
     font-size: 1em;
 }
@@ -113,7 +113,7 @@
 
 .content .messages li.sent .senderimg {
     float: left;
-    margin: 6px 8px 0 0;
+    margin: 0px 8px 0 0;
 }
 
 .content .messages li.sent p {
@@ -153,7 +153,7 @@
 
 .content .messages li.replies .senderimg {
     float: right;
-    margin: 6px 0 0 8px;
+    margin: 0px 0 0 8px;
 }
 
 .content .messages li.replies p {
@@ -170,8 +170,7 @@
 .content .messages li p {
     display: inline-block;
     padding: 10px 15px;
-    border-radius: 20px;
-    max-width: 205px;
+    border-radius: 24px;
     line-height: 130%;
 }
 
@@ -315,4 +314,17 @@
     border: none;
     outline: none;
     color: var(--sender-text-color);
+}
+
+.nth-msg{
+    position: relative;
+}
+
+.replies .nth-msg{
+    right: 48px;
+}
+
+.sent .nth-msg{
+    left: 48px;
+    border-radius: 4px 24px 24px 4px !important;
 }
