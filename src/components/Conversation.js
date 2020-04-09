@@ -46,27 +46,26 @@ const ConversationHeader = props => {
 }
 
 const MessageInput = props => {
-
     const [message, setMessage] = useState("")
-    const fileRef = useRef()
+    const [previews, setPreviews] = useState([])
     const [files, setFiles] = useState([])
-
-   
+    const [sending, setSending] = useState(false)
 
     const InputHandler = e => {
         setMessage(e.target.value)
     }
 
     const sendHandler = async e => {
-
         e.preventDefault()
+        if(sending)return
+        
         if(files.length <= 0){
             if(!message || message.length === 0) {
-                console.log("hi")
+
                 return
             }
         }
-        console.log("sending", files.length)
+        setSending(true)
         const sender = (await firebase.db.collection("users").doc(firebase.auth.currentUser.uid).get()).data()
 
         const newMessage = {
@@ -77,26 +76,20 @@ const MessageInput = props => {
             mid: [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join(''),
             sentAt: Date.now()
         }
-        if(newMessage.body !== "")
+        
         await firebase.db.collection("conversations").doc(props.conversation.uuid).collection("messages").add(newMessage)
         setMessage("")
         setFiles([])
         props.onSend()
+        setSending(false)
     }
 
     const filePickHandler = async e => {
         const file = e.target.files[0]
-        
         if(file){
-            // console.log(file)
             const storageRef = firebase.storage.ref();
-
-            // // Create a reference to 'mountains.jpg'
             const fileRef = storageRef.child([...Array(5)].map(_ => (Math.random() * 36 | 0).toString(36)).join``+file.name);
-
             await fileRef.put(file)
-
-
             const url = await fileRef.getDownloadURL()
             setFiles(f => [...f, url])
         }
@@ -106,8 +99,8 @@ const MessageInput = props => {
         <div className="message-input">
             <form className="wrap" onSubmit={sendHandler}>
                 <input type="text" onChange={InputHandler} value={message} placeholder="Write your message..." />
-                <input ref={fileRef} onChange={filePickHandler} type="file" style={{display: "none"}}/>
-                <div onClick={() => fileRef.current.click()} className="attachment-container"><i className="fa fa-paperclip attachment" aria-hidden="true"></i></div>
+                <input onChange={filePickHandler} id="attachment-loader" type="file" style={{display: "none"}}/>
+                <label htmlFor="attachment-loader" className="attachment-container"><span style={{ display: "none" }}>T</span><i className="fa fa-paperclip attachment" aria-hidden="true"></i></label>
                 <button type="submit" className="submit"><FontAwesomeIcon icon={faPaperPlane}/><span style={{ display: "none" }}>T</span></button>
             </form>
         </div>
@@ -139,16 +132,15 @@ const Message = ({message, index, conversation, previous}) => {
         <li className={message.sender === firebase.auth.currentUser.uid ? "sent" : "replies"} >
             {(previous.sender !== message.sender || index-1 < Infinity) && 
             <div className="senderimg">
-                < Avatar alt={firebase?.auth?.currentUser?.displayName?.toUpperCase()} src={message.senderImg} /> 
+                <Avatar alt={message?.sender?.toUpperCase()} src={message.senderImg} /> 
             </div>}
             <p style={{fontSize: message?.body?.match(regex)?.length === message?.body?.length/2 ? "38px": ""}}> 
                 <Linkify componentDecorator={componentDecorator}>{message.body}</Linkify>
-                {!!message.body && <br/>}
-                <span style={{fontSize: "16px"}}>
-                    {message?.attachments?.map((file, i) => (
+                {message?.attachments?.map((file, i) => (
+                    <>
                         <ModalImage className="attachment" key={file} large={file} small={file} alt={"attachment" + (i + index*2).toString(16)}/>
-                    ))}
-                </span>
+                    </>
+                ))}
             </p>
             <div className="svg-container"><FontAwesomeIcon icon={faEllipsisV} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} /></div>
             <Menu
@@ -158,7 +150,7 @@ const Message = ({message, index, conversation, previous}) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                <MenuItem onClick={() => {handleDelete();handleClose()}}>Delete</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
@@ -214,13 +206,17 @@ const Conversation = (props => {
                         <IconButton onClick={() => props.history.goBack()} aria-label="back button">
                             <FontAwesomeIcon icon={faArrowLeft} />
                         </IconButton>
-                    </Tooltip>
-                    
+                    </Tooltip>  
                     <h6 className="title">New Conversation</h6>
+                </div>
+                <div className="is-new">
+                    <div className="contact-search">
+                        <label htmlFor="ct-search">Search:</label>
+                        <input dir="auto" type="text" id="ct-search" className="contact-search-box" placeholder="Search for people by username or email" aria-label="search for new contacts by username or email"/>
+                    </div>
                 </div>
             </>
         }
-        
         </div>
     );
 })

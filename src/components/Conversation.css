@@ -1,3 +1,9 @@
+.content .is-new{
+    height: 100%;
+    max-height: 100%;
+    padding: 0;
+}
+
 .contact-profile * {
     color: var(--sender-text-color);
 }
@@ -123,13 +129,21 @@
     cursor:pointer;
     color: var(--sender-text-color);
 }
-.content .messages li:hover > .svg-container {
+.content .messages li:hover .svg-container {
     opacity: 1;
+}
+
+.content .messages li span > div{
+    display: inline;
+    
 }
 
 .content .messages li.replies .svg-container {
     float: right;
     margin-right: 10px;
+}
+.content .messages li.replies img{
+    float: right;
 }
 
 .content .messages li p {
@@ -149,9 +163,8 @@
 }
 
 .content .messages li .attachment {
-    border-radius: 5px;
+    border-radius: 1rem;
     margin-top: 7px;
-    max-width: 100%;
 }
 
 .content .messages li p {
@@ -246,7 +259,7 @@
 }
 
 .content .message-input .wrap button svg{
-    margin-left: 10px;
+    margin:  0 10px;
 }
 
 .content .message-input .wrap button i{
@@ -271,9 +284,35 @@
 }
 
 .attachment-container i{
+    display: inline-block;
     width: 50px;
 }
 
 .content .messages li.sent p a {
     color: var(--text-color)
+}
+
+.messages ul {
+    padding-top: 1%;
+}
+
+.contact-search{
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid rgba(101, 101, 101, 0.75);
+    display: grid;
+    grid-template-columns: 6rem auto;
+    align-items: center;
+}
+
+.contact-search label{
+    margin: 0 auto;
+    color: var(--sender-text-color)
+}
+
+.contact-search-box{
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--sender-text-color);
 }
