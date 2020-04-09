@@ -71,7 +71,7 @@
 
 @media screen and (max-width: 800px) {
   .sidepanel #profile .wrap img {
-    width: 40px;
+    /* width: 40px; */
     margin-left: 4px;
   }
 }
@@ -477,35 +477,36 @@
   bottom: 0;
 }
 
-.sidepanel #bottom-bar #addcontact, .sidepanel #bottom-bar button {
+.sidepanel #bottom-bar #addcontact, .sidepanel #bottom-bar .bottom-button {
   float: left;
   border: none;
   width: 50%;
-  padding: 10px 0;
+  padding: 15px 0;
   background: #32465a;
   color: var(--text-color);
   text-align: center;
   cursor: pointer;
   font-size: 0.85em;
   font-family: "proxima-nova", "Source Sans Pro", sans-serif;
+  text-decoration: none;
 }
 
-.sidepanel #bottom-bar button:focus {
+
+
+.sidepanel #bottom-bar .bottom-button:focus {
   outline: none;
 }
 
-.sidepanel #bottom-bar button:nth-child(1) {
-  border-right: 1px solid #2c3e50;
+.sidepanel #bottom-bar .bottom-button:hover {
+  background: #435f7a !important;
 }
 
-.sidepanel #bottom-bar button:hover {
-  background: #435f7a;
-}
-
-.sidepanel #bottom-bar button i {
+.sidepanel #bottom-bar .bottom-button i {
   margin-right: 3px;
   font-size: 1em;
 }
+
+
 
 a.normalize {
   text-decoration: none !important;
@@ -516,6 +517,12 @@ a.normalize {
 }
 
 @media screen and (max-width: 800px) {
+    .sidepanel #bottom-bar .bottom-button i:before {
+      position: relative;
+      top: 3px;
+      /* left: 2px; */
+    }
+
     .sidepanel {
         width: 58px;
         min-width: 58px;
@@ -535,22 +542,22 @@ a.normalize {
         /* margin: 0 !important; */
         margin-left: 3px !important;
     }
-    .sidepanel #bottom-bar button span.footertip {
+    .sidepanel #bottom-bar .bottom-button span.footertip {
         display: none;
     }
-    .sidepanel #bottom-bar button i {
+    .sidepanel #bottom-bar .bottom-button i {
         font-size: 1.3em;
     }
-    .sidepanel #bottom-bar button:nth-child(1) {
+    .sidepanel #bottom-bar .bottom-button:nth-child(1) {
         border-right: none;
         border-bottom: 1px solid #2c3e50;
     }
-    .sidepanel #bottom-bar button {
+    .sidepanel #bottom-bar .bottom-button {
         float: none;
-        width: 100%;
-        padding: 15px 0;
+        width: 100% !important;
+        padding: 15px 0 !important;
     }
-    /* .sidepanel #bottom-bar button span {
+    /* .sidepanel #bottom-bar .bottom-button span {
       display: none;
     } */
     .sidepanel #contacts ul li.contact .wrap .meta {

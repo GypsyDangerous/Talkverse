@@ -189,6 +189,7 @@
     grid-template-columns: auto 50px 50px;
     border-radius: 2rem;
     overflow: hidden;
+    box-shadow: var(--base-box-shadow);
 }
 
 .content .message-input .wrap input {
@@ -271,4 +272,8 @@
 
 .attachment-container i{
     width: 50px;
+}
+
+.content .messages li.sent p a {
+    color: var(--text-color)
 }

@@ -19,23 +19,20 @@ const Contact = props => {
 
     const getConversation = async () => {
         firebase.db.collection("conversations").onSnapshot(snapshot => {
-            const thisConv = snapshot.docs.map(doc => doc.data()).filter(conv => conv.members.includes(props.contact) && conv.members.includes(firebase.auth.currentUser.uid))
-            setConversation(thisConv[0])
+            const thisConv = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(conv => conv.members.includes(props.contact) && conv.members.includes(firebase.auth.currentUser.uid))[0]
+            setConversation(thisConv)
+            const convs = snapshot.docs.filter(doc => doc.id === thisConv?.convid)[0]
+            convs.ref.collection("messages").onSnapshot(msgSnapshot => {
+                const msgs = msgSnapshot.docs.map(doc => doc.data())
+                setRecent(msgs.sort((a, b) => b.sentAt - a.sentAt)[0])
+            })
         })
     }
 
     useEffect(() => {
         getContact()
-        getConversation()
+        getConversation() // eslint-disable-next-line
     }, [])
-
-    useEffect(() => {
-        try{
-            if(conversation){
-                setRecent(conversation.messages[conversation.messages.length - 1])
-            }
-        }catch(err){}
-    }, [conversation])
 
     return (
         <>

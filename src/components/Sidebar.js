@@ -1,49 +1,16 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Sidebar.css"
 import Contact from "./Contact"
 import firebase from "../firebase"
-import { NavLink, Redirect, withRouter, Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import {withRouter, Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
-import { deepOrange } from '@material-ui/core/colors';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        '& > *': {
-            margin: theme.spacing(1),
-        },
-    },
-    orange: {
-        color: theme.palette.getContrastText(deepOrange[500]),
-        backgroundColor: deepOrange[500],
-    },
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(2, 4, 3),
-        width: "50%",
-        height: "80%",
-        borderRadius: "1rem",
-        outline: "none"
-    },
-}));
+
 
 const SidebarHeader = withRouter(props => {
-
-    const classes = useStyles()
-
     const {currentUser} = props
     const [status, setStatus] = useState()
 
@@ -54,14 +21,9 @@ const SidebarHeader = withRouter(props => {
     const [statusExpanded, setStatusExpanded] = useState(false)
     const [headerExpanded, setHeaderExpanded] = useState(false)
 
-    // const hex = "🔥".codePointAt().toString(16)
-    // console.log(hex)
-
     return (
-        
         <div id="profile" className={headerExpanded ? "expanded" : ""} >
                 <div className="wrap">
-                {/* <img src={process.env.PUBLIC_URL + `/128/${hex}.png`}/> */}
                     <ClickAwayListener onClickAway={() => setStatusExpanded(false)}>
                         <div id="profile-img" className={`${status}`}><Avatar alt={currentUser?.name?.toUpperCase()} src={currentUser.profilePicture} onClick={() => setStatusExpanded(s => !s)}  /></div>
                     </ClickAwayListener>
@@ -75,7 +37,7 @@ const SidebarHeader = withRouter(props => {
                                 <li 
                                     onClick={() => props.updateUser({status: sttus})} 
                                     id={`status-${sttus}`} 
-                                    className={status == sttus ? "active" : ""}
+                                    className={status === sttus ? "active" : ""}
                                     key={sttus}
                                 >
                                     <span className="status-circle"></span><p>{sttus}</p>
@@ -110,13 +72,11 @@ const Sidebar = withRouter(props => {
             db.collection("users").doc(currentUser.uid).onSnapshot(doc => {
                 const userdata = { ...doc.data(), id: doc.id }
                 setUserData(userdata)
-                // setContacts(userdata.contacts)
             })
             db.collection("conversations").onSnapshot(snapshot => {
                 const contacts = [].concat.apply([], snapshot.docs.map(doc => doc.data()).filter(doc => doc.members.includes(firebase.auth.currentUser.uid)).map(conv => conv.members))
                 setContacts(!contacts ? [] : contacts.filter(id => id !== firebase.auth.currentUser.uid))
             })
-            
         }
     }
 
@@ -130,7 +90,7 @@ const Sidebar = withRouter(props => {
     }
 
     useEffect(() => {
-        getUser()
+        getUser() // eslint-disable-next-line
     }, [])
 
     const handleClick = (e) => {
@@ -142,8 +102,6 @@ const Sidebar = withRouter(props => {
     };
 
     const [anchorEl, setAnchorEl] = useState(null);
-
-    const classes = useStyles()
 
     return (
         <header className="sidepanel">
@@ -160,10 +118,10 @@ const Sidebar = withRouter(props => {
                 </ul>
             </div>
             <div id="bottom-bar">
-                <Link to="/conversations/new" id="addcontact"><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i><span className="footertip"> New Chat</span></Link>
-                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                <Link to="/conversations/new" id="addcontact" className="bottom-button"><span><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i><span className="footertip"> New Chat</span></span></Link>
+                <button className="bottom-button" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                     <i className="fa fa-cog fa-fw" aria-hidden="true"></i> <span className="footertip">Settings</span>
-                </Button>
+                </button>
                 <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}

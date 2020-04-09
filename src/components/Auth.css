@@ -396,10 +396,10 @@ hr{
     color: var(--sender-text-color);
 }
 
-.custom-control-label{
+.custom-control-label {
     color: var(--sender-text-color)
 }
 
-a{
+.card-body a {
     color: var(--grey) !important
 }

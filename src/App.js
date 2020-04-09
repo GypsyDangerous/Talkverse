@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
-import socketIOClient from "socket.io-client"
 import firebase from "./firebase"
-import { BrowserRouter as Router, Route, Redirect, Switch, Link } from "react-router-dom"
+import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Home from './components/Home';
 import LoginPage from './components/LoginPage';

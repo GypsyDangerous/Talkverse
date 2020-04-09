@@ -3,14 +3,14 @@ import "firebase/auth"
 import "firebase/firebase-firestore"
 
 // helper function for using push notifications, will use later
-const initMessaging = async () => {
-    const messaging = app.messaging();
-    try{
-        await messaging.requestPermission()
-    }catch(err){
-        console.log(err.message)
-    }
-}
+// const initMessaging = async () => {
+//     const messaging = app.messaging();
+//     try{
+//         await messaging.requestPermission()
+//     }catch(err){
+//         console.log(err.message)
+//     }
+// }
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -22,10 +22,6 @@ const firebaseConfig = {
     appId: "1:675144009480:web:c0d9da3a59178abb024ebd",
     measurementId: "G-VK4FYH6J07"
 };
-
-
-
-// initMessaging()
 
 class Firebase {
     constructor(){

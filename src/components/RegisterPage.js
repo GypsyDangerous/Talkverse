@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import "./Auth.css"
 import firebase from "../firebase"
 import { withRouter } from 'react-router';
 import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons"
-import { faEye, faEyeSlash, faUsers } from "@fortawesome/free-solid-svg-icons"
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
