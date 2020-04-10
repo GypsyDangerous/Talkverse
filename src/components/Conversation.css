@@ -9,6 +9,7 @@
 }
 
 .content {
+    z-index: 10;
     float: right;
     width: 60%;
     height: 100%;
@@ -72,11 +73,9 @@
 }
 
 .content .messages {
-    height: auto;
-    min-height: calc(100% - 93px);
-    max-height: calc(100% - 93px);
+    z-index: 10;
+    height: calc(100% - 93px);
     overflow-y: scroll;
-    overflow-x: hidden;
     width: 100%;
     position: relative;
     padding-left: 10%;
@@ -100,11 +99,11 @@
 }
 
 .content .messages li {
-    clear: both;
-    float: left;
-    margin: 2px 5px;
+    margin: 4px 5px;
     width: calc(100% - 25px);
-    font-size: 1em;
+    font-size: 1rem;
+    display: flex;
+    align-items: flex-end;
 }
 
 .content .messages li:nth-last-child(1) {
@@ -112,13 +111,12 @@
 }
 
 .content .messages li.sent .senderimg {
-    float: left;
     margin: 0px 8px 0 0;
 }
 
 .content .messages li.sent p {
-    background: #435f7a;
-    color: var(--text-color);
+    background: var(--sidebar-accent-color);
+    color: var(--sender-text-color);
 }
 
 .svg-container{
@@ -133,17 +131,12 @@
     opacity: 1;
 }
 
-.content .messages li span > div{
-    display: inline;
-    
-}
-
 .content .messages li.replies .svg-container {
-    float: right;
     margin-right: 10px;
 }
-.content .messages li.replies img{
-    float: right;
+
+.content .messages li.replies {
+    flex-direction: row-reverse;
 }
 
 .content .messages li p {
@@ -152,13 +145,11 @@
 }
 
 .content .messages li.replies .senderimg {
-    float: right;
     margin: 0px 0 0 8px;
 }
 
 .content .messages li.replies p {
     background: var(--accent-color);
-    float: right;
     color: var(--sender-text-color);
 }
 
@@ -168,7 +159,6 @@
 }
 
 .content .messages li p {
-    display: inline-block;
     padding: 10px 15px;
     border-radius: 24px;
     line-height: 130%;
@@ -176,7 +166,7 @@
 
 @media screen and (min-width: 800px) {
     .content .messages li p {
-        max-width: 50%;
+        max-width: 40%;
     }
 }
 
@@ -184,21 +174,17 @@
     position: absolute;
     bottom: 1%;
     width: 100%;
-    z-index: 99;
     height: fit-content;
     padding-left: 10%;
     padding-right: 10%;
     
 }
 
-.content .message-input *:not(.attachment-container){
-    min-height: 48px;
-}
-
 .content .message-input .wrap {
+    z-index: 99;
     position: relative;
     display: grid;
-    grid-template-columns: auto 50px 50px;
+    grid-template-columns: auto repeat(2, 40px) 50px;
     border-radius: 2rem;
     overflow: hidden;
     box-shadow: var(--base-box-shadow);
@@ -206,7 +192,6 @@
 
 .content .message-input .wrap input {
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-    float: left;
     border: none;
     padding: 11px 32px 10px 15px;
     font-size: 1em;
@@ -230,8 +215,7 @@
     z-index: 4;
     font-size: 1.1em;
     color: var(--sender-text-color);
-    /* opacity: .5; */
-    background: var(--base-color);
+    background: var(--accent-color);
     cursor: pointer;
     min-width: 40px;
     min-height: 48px;
@@ -247,26 +231,22 @@
 
 .content .message-input .wrap button {
     border: none;
-    width: 50px;
-    display: grid;
+    display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
     cursor: pointer;
-    background: #32465a;
+    background: var(--sidebar-accent-color);
     color: var(--text-color);
 }
 
-.content .message-input .wrap button svg{
-    margin:  0 10px;
-}
+
 
 .content .message-input .wrap button i{
     height: fit-content;
 }
 
 .content .message-input .wrap button:hover {
-    background: #435f7a;
+    background: var(--sidebar-dark-accent);
 }
 
 .content .message-input .wrap button:focus {
@@ -285,10 +265,19 @@
 .attachment-container i{
     display: inline-block;
     width: 50px;
+    background: var(--accent-color);
+}
+
+.attachment-container{
+    background: var(--accent-color);
+    margin: 0px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .content .messages li.sent p a {
-    color: var(--text-color)
+    color: var(--sender-text-color)
 }
 
 .messages ul {
@@ -326,5 +315,41 @@
 
 .sent .nth-msg{
     left: 48px;
-    border-radius: 4px 24px 24px 4px !important;
+    /* border-radius: 4px 24px 24px 4px !important; */
+}
+
+
+.message-input aside.emoji-picker-react{
+    z-index: 99;
+    background: var(--sidebar-accent-color);
+    border: none;
+    box-shadow: var(--base-box-shadow);
+    position: relative;
+    left: 100%;
+    top: -5px;
+    transform: translate(-100%);
+    /* display: none; */
+}
+
+.app--dark .message-input .emoji-picker-react .emoji-categories button{
+    filter: grayscale(1) invert(1);
+}
+
+.message-input .emoji-picker-react input.emoji-search{
+    background: var(--accent-color);
+    border: none !important;
+    outline: none;
+    margin-bottom: 5px;
+    color: var(--sender-text-color)
+}
+
+.message-input .emoji-picker-react .emoji-group:before{
+    background: var(--accent-color);
+    border: none !important;
+    outline: none;
+    text-align: center;
+}
+
+.emoji-picker-button{
+    font-size: 20px;
 }

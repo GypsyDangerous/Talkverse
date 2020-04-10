@@ -4,8 +4,8 @@
   max-width: 340px;
   width: 40%;
   height: 100vh;
-  background: #2c3e50;
-  color: var(--text-color);
+  background: var(--sidebar-color);
+  color: var(--sender-text-color);
   overflow: hidden;
   position: relative;
 }
@@ -124,7 +124,7 @@
   float: right;
   font-size: 0.8em;
   cursor: pointer;
-  color: var(--text-color);
+  color: var(--sender-text-color);
   transition: 0.3s ease-in-out;
 }
 
@@ -143,7 +143,7 @@
   border-radius: 6px;
   z-index: 99;
   line-height: initial;
-  background: #435f7a;
+  background: var(--sidebar-dark-accent);
   -moz-transition: 0.3s all ease;
   -o-transition: 0.3s all ease;
   -webkit-transition: 0.3s all ease;
@@ -176,7 +176,7 @@
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 8px solid #435f7a;
+  border-bottom: 8px solid var(--sidebar-dark-accent);
   margin: -8px 0 0 24px;
 }
 
@@ -189,6 +189,7 @@
 .sidepanel #profile .wrap #status-options ul {
   overflow: hidden;
   border-radius: 6px;
+  margin: 0 !important;
 }
 
 .sidepanel #profile .wrap #status-options ul li {
@@ -198,7 +199,7 @@
 }
 
 .sidepanel #profile .wrap #status-options ul li:hover {
-  background: #496886;
+  background: var(--sidebar-accent-color);
 }
 
 .sidepanel #profile .wrap #status-options ul li span.status-circle {
@@ -308,7 +309,7 @@
 .sidepanel #profile .wrap #expanded input {
   border: none;
   margin-bottom: 6px;
-  background: #32465a;
+  background: var(--sidebar-accent-color);
   border-radius: 3px;
   color: var(--sender-text-color);
   padding: 7px;
@@ -317,12 +318,12 @@
 
 .sidepanel #profile .wrap #expanded input:focus {
   outline: none;
-  background: #435f7a;
+  background: var(--sidebar-dark-accent);
 }
 
 .sidepanel #search {
-  border-top: 1px solid #32465a;
-  border-bottom: 1px solid #32465a;
+  border-top: 1px solid var(--sidebar-accent-color);
+  border-bottom: 1px solid var(--sidebar-accent-color);
   font-weight: 300;
   box-shadow: var(--base-box-shadow);
   /* border-bottom: 1px solid */
@@ -338,29 +339,29 @@
   padding: 10px 0 10px 46px;
   width: calc(100%);
   border: none;
-  background: #32465a;
+  background: var(--sidebar-accent-color);
   color: var(--sender-text-color);
 }
 
 .sidepanel #search input:focus {
   outline: none;
-  background: #435f7a;
+  background: var(--sidebar-dark-accent);
 }
 
 .sidepanel #search input::-webkit-input-placeholder {
-  color: var(--text-color);
+  color: var(--sender-text-color);
 }
 
 .sidepanel #search input::-moz-placeholder {
-  color: var(--text-color);
+  color: var(--sender-text-color);
 }
 
 .sidepanel #search input:-ms-input-placeholder {
-  color: var(--text-color);
+  color: var(--sender-text-color);
 }
 
 .sidepanel #search input:-moz-placeholder {
-  color: var(--text-color);
+  color: var(--sender-text-color);
 }
 
 .sidepanel #contacts {
@@ -375,7 +376,7 @@
 
 .sidepanel #contacts::-webkit-scrollbar {
   width: 8px;
-  background: #2c3e50;
+  background: var(--sidebar-color);
 }
 
 .sidepanel #contacts::-webkit-scrollbar-thumb {
@@ -391,16 +392,16 @@
 }
 
 .sidepanel #contacts ul li.contact:hover {
-  background: #32465a;
+  background: var(--sidebar-accent-color);
 }
 
 .sidepanel #contacts ul a.active li.contact {
-  background: #32465a;
-  border-right: 5px solid #435f7a;
+  background: var(--sidebar-accent-color);
+  border-right: 5px solid var(--sidebar-dark-accent);
 }
 
 .sidepanel #contacts ul a.active li.contact span.contact-status {
-  border: 2px solid #32465a !important;
+  border: 2px solid var(--sidebar-accent-color) !important;
 }
 
 .sidepanel #contacts ul li.contact .wrap {
@@ -416,7 +417,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: 2px solid #2c3e50;
+  border: 2px solid var(--sidebar-color);
   background: #95a5a6;
 }
 
@@ -441,7 +442,7 @@
 
 .sidepanel #contacts ul li.contact .wrap .meta {
   padding: 5px 0 0 0;
-  color: var(--text-color);
+  color: var(--sender-text-color);
 }
 
 .sidepanel #contacts ul li.contact .wrap .meta .name {
@@ -463,12 +464,11 @@
 
 .sidepanel #contacts ul li.contact .wrap .meta .preview span {
   position: initial;
-  border-radius: initial;
   background: none;
   border: none;
   padding: 0 2px 0 0;
   margin: 0 0 0 1px;
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 .sidepanel #bottom-bar {
@@ -482,8 +482,8 @@
   border: none;
   width: 50%;
   padding: 15px 0;
-  background: #32465a;
-  color: var(--text-color);
+  background: var(--sidebar-accent-color);
+  color: var(--sender-text-color);
   text-align: center;
   cursor: pointer;
   font-size: 0.85em;
@@ -493,12 +493,13 @@
 
 
 
-.sidepanel #bottom-bar .bottom-button:focus {
+.sidepanel #bottom-bar *:focus {
   outline: none;
+  background: var(--sidebar-dark-accent) !important;
 }
 
 .sidepanel #bottom-bar .bottom-button:hover {
-  background: #435f7a !important;
+  background: var(--sidebar-dark-accent) !important;
 }
 
 .sidepanel #bottom-bar .bottom-button i {
@@ -532,7 +533,7 @@ a.normalize {
         width: 100%;
         margin: 0 auto;
         padding: 5px 0 0 0;
-        background: #32465a;
+        background: var(--sidebar-accent-color);
     }
 
     #profile-img {
@@ -550,7 +551,7 @@ a.normalize {
     }
     .sidepanel #bottom-bar .bottom-button:nth-child(1) {
         border-right: none;
-        border-bottom: 1px solid #2c3e50;
+        border-bottom: 1px solid var(--sidebar-color);
     }
     .sidepanel #bottom-bar .bottom-button {
         float: none;

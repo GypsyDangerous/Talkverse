@@ -43,7 +43,10 @@ const Contact = props => {
                         <img src={contact.profilePicture} alt={contact.name + " Profile Picture"} />
                         <div className="meta">
                             <p className="display-name name">{contact.name}</p>
-                            <p className="preview">{recent && <>{recent.sender === firebase.auth.currentUser.uid && <span>You:</span>} {recent.body}</>}</p>
+                            <p className="preview">
+                                {recent?.sender === firebase?.auth?.currentUser?.uid && <span>You: </span>} 
+                                {recent?.attachments?.length == 0 ? recent?.body : "Picture"}
+                            </p>
                         </div>
                     </div>}
                 </li> 

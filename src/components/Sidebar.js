@@ -104,7 +104,7 @@ const Sidebar = withRouter(props => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     return (
-        <header className="sidepanel">
+        <nav className="sidepanel">
             <SidebarHeader updateUser={updateUser} currentUser={userData}/>
             <div id="search">
                 <label htmlFor="contact-search"><i className="fa fa-search" aria-hidden="true"></i><span style={{ opacity: 0 }}>This sentence is invisible</span></label>
@@ -135,7 +135,7 @@ const Sidebar = withRouter(props => {
                     <MenuItem onClick={async () => {await firebase.logout(); props.history.push("/")}}>Logout</MenuItem>
                 </Menu>
             </div>
-        </header>
+        </nav>
 
     );
 })
