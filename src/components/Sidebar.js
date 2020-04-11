@@ -117,7 +117,7 @@ const Sidebar = withRouter(props => {
                     ))}
                 </ul>
             </div>
-            <div id="bottom-bar">
+            <footer id="bottom-bar">
                 <Link to="/conversations/new" id="addcontact" className="bottom-button"><span><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i><span className="footertip"> New Chat</span></span></Link>
                 <button className="bottom-button" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                     <i className="fa fa-cog fa-fw" aria-hidden="true"></i> <span className="footertip">Settings</span>
@@ -134,7 +134,7 @@ const Sidebar = withRouter(props => {
                     <MenuItem onClick={props.toggleColorMode}>Toggle Dark/Light Mode</MenuItem>
                     <MenuItem onClick={async () => {await firebase.logout(); props.history.push("/")}}>Logout</MenuItem>
                 </Menu>
-            </div>
+            </footer>
         </nav>
 
     );

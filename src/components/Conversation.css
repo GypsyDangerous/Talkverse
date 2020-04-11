@@ -155,6 +155,10 @@
 
 .content .messages li .attachment {
     border-radius: 1rem;
+    margin-top: 2px;
+}
+
+.text-img{
     margin-top: 7px;
 }
 
@@ -274,6 +278,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--sender-text-color)
 }
 
 .content .messages li.sent p a {
@@ -331,8 +336,23 @@
     /* display: none; */
 }
 
+
+.message-input aside.emoji-picker-react *::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+
+.message-input aside.emoji-picker-react *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
 .app--dark .message-input .emoji-picker-react .emoji-categories button{
     filter: grayscale(1) invert(1);
+}
+
+.message-input aside.emoji-picker-react .content-wrapper:before{
+    display: none;
 }
 
 .message-input .emoji-picker-react input.emoji-search{
@@ -348,6 +368,7 @@
     border: none !important;
     outline: none;
     text-align: center;
+    margin-top: 5px;
 }
 
 .emoji-picker-button{

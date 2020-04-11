@@ -45,7 +45,7 @@ const Contact = props => {
                             <p className="display-name name">{contact.name}</p>
                             <p className="preview">
                                 {recent?.sender === firebase?.auth?.currentUser?.uid && <span>You: </span>} 
-                                {recent?.attachments?.length == 0 ? recent?.body : "Picture"}
+                                {recent?.attachments?.length === 0 ? recent?.body : "Picture"}
                             </p>
                         </div>
                     </div>}

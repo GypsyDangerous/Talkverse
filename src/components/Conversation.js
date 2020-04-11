@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import {faPaperPlane, faArrowLeft} from "@fortawesome/free-solid-svg-icons"
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons"
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import ModalImage from "react-modal-image"
@@ -15,7 +15,6 @@ import punycode from "punycode";
 import Picker from 'emoji-picker-react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ImageIcon from '@material-ui/icons/Image';
-import SendIcon from '@material-ui/icons/Send'
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
 
 const componentDecorator = (href, text, key) => (
@@ -52,7 +51,6 @@ const ConversationHeader = props => {
 
 const MessageInput = props => {
     const [message, setMessage] = useState("")
-    // const [previews, setPreviews] = useState([])
     const [files, setFiles] = useState([])
     const [sending, setSending] = useState(false)
 
@@ -94,7 +92,7 @@ const MessageInput = props => {
         const file = e.target.files[0]
         if(file){
             const storageRef = firebase.storage.ref();
-            const fileRef = storageRef.child([...Array(5)].map(_ => (Math.random() * 36 | 0).toString(36)).join``+file.name);
+            const fileRef = storageRef.child([...Array(10)].map(_ => (Math.random() * 36 | 0).toString(36)).join``+file.name);
             await fileRef.put(file)
             const url = await fileRef.getDownloadURL()
             setFiles(f => [...f, url])
@@ -114,7 +112,7 @@ const MessageInput = props => {
                 {open && <Picker onEmojiClick={onEmojiClick} />}
                 <form className="wrap" onSubmit={sendHandler}>
                     <input type="text" onChange={InputHandler} value={message} placeholder="Write your message..." />
-                    <label className="attachment-container emoji-picker-button" onClick={() => setOpen(o => !o)}>😀</label>
+                    <span className="attachment-container emoji-picker-button" onClick={() => setOpen(o => !o)}><span role="img" aria-label="emoji picker button">😀</span></span>
                     <input onChange={filePickHandler} id="attachment-loader" type="file" style={{display: "none"}}/>
                     <label htmlFor="attachment-loader" className="attachment-container"><ImageIcon/></label>
                     <button type="submit" className="submit"><SendTwoToneIcon/></button>
@@ -148,7 +146,7 @@ const Message = ({message, index, conversation, previous, next}) => {
     }
 
     const regex1 = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
-    const regex2 = /(\u00a9|\u00ae | [\u2000 -\u3300] |\ud83c[\ud000 -\udfff]|\ud83d[\ud000 -\udfff]|\ud83e[\ud000 -\udfff])/g
+    // const regex2 = /(\u00a9|\u00ae | [\u2000 -\u3300] |\ud83c[\ud000 -\udfff]|\ud83d[\ud000 -\udfff]|\ud83e[\ud000 -\udfff])/g
     
     return (
         <li className={message.sender === firebase.auth.currentUser.uid ? "sent" : "replies"} >
@@ -160,7 +158,7 @@ const Message = ({message, index, conversation, previous, next}) => {
                 <Linkify componentDecorator={componentDecorator}>{message.body}</Linkify>
                 {message?.attachments?.map((file, i) => (
                     <>
-                        <ModalImage className="attachment" key={file} large={file} small={file} alt={"attachment" + (i + index*2).toString(16)}/>
+                        <ModalImage className={message?.body?"text-img attachment":"attachment"} key={file} large={file} small={file} alt={"attachment" + (i + index*2).toString(16)}/>
                     </>
                 ))}
             </p>
@@ -180,7 +178,6 @@ const Message = ({message, index, conversation, previous, next}) => {
     )
 }
 
-
 const Conversation = (props => {
     const [conv, setConv] = useState()
     const [other, setOther] = useState()
@@ -193,21 +190,20 @@ const Conversation = (props => {
         
         firebase.db.collection("conversations").onSnapshot(async snapshot => {
             try {
-            const me = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(doc => doc.id === id)[0]
-            setConv(me)
-            const convs = snapshot.docs.filter(doc => doc.id === me?.convid)[0]
-            convs.ref.collection("messages").onSnapshot(msgSnapshot => {
-                const msgs = msgSnapshot.docs.map(doc => {return {...doc.data(), id: doc.id}})
-                setMessages(msgs.sort((a, b) => a.sentAt-b.sentAt))
-            })
-            setOther(me?.members?.filter(id => id !== firebase?.auth?.currentUser?.uid)[0])
+                const me = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(doc => doc.id === id)[0]
+                setConv(me)
+                const convs = snapshot.docs.filter(doc => doc.id === me?.convid)[0]
+                convs.ref.collection("messages").onSnapshot(msgSnapshot => {
+                    const msgs = msgSnapshot.docs.map(doc => {return {...doc.data(), id: doc.id}})
+                    setMessages(msgs.sort((a, b) => a.sentAt-b.sentAt))
+                })
+                setOther(me?.members?.filter(id => id !== firebase?.auth?.currentUser?.uid)[0])
             } catch (err) { }
         })
-        
     }, [props])
     
     return ( 
-    <div  className = "content" >
+    <div className = "content">
         {!props.empty && !props.isNew &&
             <>
                 <ConversationHeader convInfo={other}/>

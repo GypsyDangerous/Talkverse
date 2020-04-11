@@ -16,10 +16,10 @@ const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     databaseURL: process.env.REACT_APP_DATABASE_URL,
-    projectId: "chat-app-8b4e4",
-    storageBucket: "chat-app-8b4e4.appspot.com",
+    projectId: process.env.REACT_APP_PROJECTID,
+    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
     messagingSenderId: "675144009480",
-    appId: "1:675144009480:web:c0d9da3a59178abb024ebd",
+    appId: process.env.REACT_APP_APP_ID,
     measurementId: "G-VK4FYH6J07"
 };
 
@@ -31,6 +31,7 @@ class Firebase {
         this.db = app.firestore();
         this.app = app
         this.storage = app.storage()
+        this.perf = app.performance()
     }
 
     login(email, password) {
