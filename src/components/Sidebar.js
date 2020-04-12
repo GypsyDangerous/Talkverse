@@ -4,11 +4,11 @@ import Contact from "./Contact"
 import firebase from "../firebase"
 import {withRouter, Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-
-
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone'
+import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 
 const SidebarHeader = withRouter(props => {
     const {currentUser} = props
@@ -25,7 +25,7 @@ const SidebarHeader = withRouter(props => {
         <div id="profile" className={headerExpanded ? "expanded" : ""} >
                 <div className="wrap">
                     <ClickAwayListener onClickAway={() => setStatusExpanded(false)}>
-                        <div id="profile-img" className={`${status}`}><Avatar alt={currentUser?.name?.toUpperCase()} src={currentUser.profilePicture} onClick={() => setStatusExpanded(s => !s)}  /></div>
+                    <div className={`profile-img ${status}`}><Avatar alt={currentUser?.name?.toUpperCase()} src={currentUser.profilePicture} onClick={() => setStatusExpanded(s => !s)}  /></div>
                     </ClickAwayListener>
                     <div className="user">
                         <p className="display-name">{currentUser.name}</p>
@@ -118,9 +118,16 @@ const Sidebar = withRouter(props => {
                 </ul>
             </div>
             <footer id="bottom-bar">
-                <Link to="/conversations/new" id="addcontact" className="bottom-button"><span><i className="fa fa-user-plus fa-fw" aria-hidden="true"></i><span className="footertip"> New Chat</span></span></Link>
+                <Link to="/conversations/new" id="addcontact" className="bottom-button">
+                    <span className="footer-button-span">
+                        <AddCircleTwoToneIcon/>
+                    <span className="footertip"> New Chat</span>
+                </span></Link>
                 <button className="bottom-button" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                    <i className="fa fa-cog fa-fw" aria-hidden="true"></i> <span className="footertip">Settings</span>
+                    <span className="footer-button-span">
+                        <SettingsTwoToneIcon/> 
+                        <span className="footertip">Settings</span>
+                    </span>
                 </button>
                 <Menu
                     id="simple-menu"

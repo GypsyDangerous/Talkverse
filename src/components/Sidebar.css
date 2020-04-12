@@ -76,26 +76,26 @@
   }
 }
 
-.sidepanel #profile .wrap #profile-img {
+.profile-img {
   width: fit-content;
   padding: 3px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.sidepanel #profile .wrap .online {
+.online {
   border: var(--status-border-size) solid #2ecc71;
 }
 
-.sidepanel #profile .wrap .away {
+.away {
   border: var(--status-border-size) solid #f1c40f;
 }
 
-.sidepanel #profile .wrap .busy {
+.busy {
   border: var(--status-border-size) solid #e74c3c;
 }
 
-.sidepanel #profile .wrap .offline {
+.offline {
   border: var(--status-border-size) solid #95a5a6;
 }
 
@@ -141,7 +141,7 @@
   width: 150px;
   margin: 20px 0 0 0;
   border-radius: 6px;
-  z-index: 99;
+  z-index: 990000;
   line-height: initial;
   background: var(--sidebar-dark-accent);
   -moz-transition: 0.3s all ease;
@@ -326,7 +326,8 @@
   border-bottom: 1px solid var(--sidebar-accent-color);
   font-weight: 300;
   box-shadow: var(--base-box-shadow);
-  /* border-bottom: 1px solid */
+  z-index: 10;
+  position: relative;
 }
 
 .sidepanel #search label {
@@ -408,6 +409,7 @@
   width: 88%;
   margin: 0 auto;
   position: relative;
+  display: flex;
 }
 
 .sidepanel #contacts ul li.contact .wrap span {
@@ -601,4 +603,11 @@ a.normalize {
     .sidepanel #profile .wrap #status-options ul li {
         padding: 15px 0 25px 22px;
     }
+}
+
+span.footer-button-span{
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import "./Auth.css"
 import firebase from "../firebase"
 import { withRouter } from 'react-router';
-import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons"
+import { faGoogle } from "@fortawesome/free-brands-svg-icons"
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, Redirect } from 'react-router-dom';
@@ -45,7 +45,8 @@ const LoginPage = props => {
             await firebase.db.collection("users").doc(user.uid).set({
                 name: user.displayName,
                 uid: user.uid,
-                profilePicture: user.photoURL
+                profilePicture: user.photoURL,
+                status: "online"
             })
         }
         props.history.push("/")
@@ -74,7 +75,7 @@ const LoginPage = props => {
                             </form>
                             <div className="form-signin">
                                 <button onClick={handleGoolgeSignIn} className="btn btn-lg btn-google btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGoogle} className="logo mr-2" /> Sign in with Google</button>
-                                <button className="btn btn-lg btn-github btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGithub} className="logo mr-2" />Sign in with Github</button>
+                                {/* <button onClick={handleGithubSignIn} className="btn btn-lg btn-github btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGithub} className="logo mr-2" />Sign in with Github</button> */}
                                 <div className="form__links">
                                     <span>Need an account? <Link to="/register">Register</Link></span>
                                     <Link to="/register">Change Password</Link>

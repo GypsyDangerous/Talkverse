@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "./Auth.css"
 import firebase from "../firebase"
 import { withRouter } from 'react-router';
-import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons"
+import { faGoogle } from "@fortawesome/free-brands-svg-icons"
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
@@ -17,12 +17,13 @@ const RegisterPage = props => {
     const formSubmitHandler = async e => {
         e.preventDefault()
         try {
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            const user = await firebase.auth().createUserWithEmailAndPassword(email, password)
-            console.log(user.user.uid)
-            firebase.db.collection("users").doc(user.user.uid).set({
+            // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            const user = await firebase.register(userName, email, password)
+            firebase.db.collection("users").doc(user.uid).set({
                 name: userName,
-                uid: user.user.uid
+                uid: user.uid,
+                profilePicture: "",
+                status: "online"
             })
             props.history.push("/")
         } catch (err) {
@@ -31,14 +32,26 @@ const RegisterPage = props => {
     }
 
     const handleGoolgeSignIn = async e => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        const result = await firebase.auth().signInWithPopup(provider)
+        const provider = new firebase.app.auth.GoogleAuthProvider();
+        const result = await firebase.auth.signInWithPopup(provider)
         const user = result.user
-        firebase.db.collection("users").doc(user.uid).set({
-            name: user.displayName,
-            uid: user.uid,
-            profilePicture: user.photoURL
+        firebase.auth.currentUser.updateProfile({
+            displayName: user.displayName
         })
+        try {
+            await firebase.db.collection("users").doc(user.uid).update({
+                name: user.displayName,
+                uid: user.uid,
+                profilePicture: user.photoURL
+            })
+        } catch (err) {
+            await firebase.db.collection("users").doc(user.uid).set({
+                name: user.displayName,
+                uid: user.uid,
+                profilePicture: user.photoURL,
+                status: "online"
+            })
+        }
         props.history.push("/")
     }
 
@@ -69,7 +82,7 @@ const RegisterPage = props => {
                         </form>
                         <div className="form-signin">
                             <button onClick={handleGoolgeSignIn} className="btn btn-lg btn-google btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGoogle} className="logo mr-2" /> Sign in with Google</button>
-                            <button className="btn btn-lg btn-github btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGithub} className="logo mr-2" />Sign in with Github</button>
+                            {/* <button className="btn btn-lg btn-github btn-block text-uppercase" type="submit"><FontAwesomeIcon icon={faGithub} className="logo mr-2" />Sign in with Github</button> */}
                             <div className="form__links">
                                 <span>Already have an account? <Link to="/login">Login</Link></span>
                                 <Link to="/login">Change Password</Link>

@@ -47,7 +47,7 @@ class Firebase {
         })
         return result
     }
-
+    
     logout(){
         return this.auth.signOut()
     }

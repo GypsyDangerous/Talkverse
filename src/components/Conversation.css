@@ -41,6 +41,8 @@
     display: flex;
     justify-content: left;
     align-items: center;
+    position: relative;
+    z-index: 10;
 }
 
 .content .contact-profile .conversation-header-img {
@@ -87,15 +89,6 @@
     .content .messages {
         max-height: calc(100% - 105px);
     }
-}
-
-.content .messages::-webkit-scrollbar {
-    width: 8px;
-    background: transparent;
-}
-
-.content .messages::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .content .messages li {
@@ -158,7 +151,7 @@
     margin-top: 2px;
 }
 
-.text-img{
+.content .messages li .attachment.text-img{
     margin-top: 7px;
 }
 
@@ -281,7 +274,7 @@
     color: var(--sender-text-color)
 }
 
-.content .messages li.sent p a {
+.content .messages li p a {
     color: var(--sender-text-color)
 }
 
@@ -289,7 +282,7 @@
     padding-top: 1%;
 }
 
-.contact-search{
+.contact-search-bar{
     width: 100%;
     height: 60px;
     border-bottom: 1px solid rgba(101, 101, 101, 0.75);
@@ -298,7 +291,7 @@
     align-items: center;
 }
 
-.contact-search label{
+.contact-search-bar label{
     margin: 0 auto;
     color: var(--sender-text-color)
 }
@@ -308,6 +301,31 @@
     border: none;
     outline: none;
     color: var(--sender-text-color);
+}
+
+.contact-search-body{
+    overflow-y: auto;
+    height: calc(100% - 120px);
+}
+
+.contact-search-body ul{
+    margin: 0;
+}
+
+.search-result{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.img-container{
+    display: inline-block;
+    margin-right: 1rem
+}
+
+.search-result:hover{
+    background: var(--accent-color)
 }
 
 .nth-msg{
@@ -320,9 +338,7 @@
 
 .sent .nth-msg{
     left: 48px;
-    /* border-radius: 4px 24px 24px 4px !important; */
 }
-
 
 .message-input aside.emoji-picker-react{
     z-index: 99;
@@ -333,17 +349,16 @@
     left: 100%;
     top: -5px;
     transform: translate(-100%);
-    /* display: none; */
 }
 
 
-.message-input aside.emoji-picker-react *::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 8px;
     background: transparent;
 }
 
 
-.message-input aside.emoji-picker-react *::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -373,4 +388,22 @@
 
 .emoji-picker-button{
     font-size: 20px;
+}
+
+[role="img"]{
+    cursor: pointer;
+}
+
+.empty{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    opacity: .5;
+    flex-direction: column;
+}
+
+.empty svg{
+    /* transform: scale(10); */
+    font-size: 10rem;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import firebase from "../firebase"
 import { NavLink } from 'react-router-dom';
+import { Avatar } from '@material-ui/core';
 
 const Contact = props => {
     // console.log(props)
@@ -22,6 +23,7 @@ const Contact = props => {
             const thisConv = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(conv => conv.members.includes(props.contact) && conv.members.includes(firebase.auth.currentUser.uid))[0]
             setConversation(thisConv)
             const convs = snapshot.docs.filter(doc => doc.id === thisConv?.convid)[0]
+            
             convs.ref.collection("messages").onSnapshot(msgSnapshot => {
                 const msgs = msgSnapshot.docs.map(doc => doc.data())
                 setRecent(msgs.sort((a, b) => b.sentAt - a.sentAt)[0])
@@ -36,17 +38,19 @@ const Contact = props => {
 
     return (
         <>
-            {conversation && <NavLink to={"/conversations/" + conversation.id} activeClassName="active" className="normalize">
+            {conversation && <NavLink to={"/conversations/" + conversation.convid} activeClassName="active" className="normalize">
                 <li className="contact">
                     {contact && <div className="wrap">
                         <span className={`contact-status ${contact.status}`}></span>
-                        <img src={contact.profilePicture} alt={contact.name + " Profile Picture"} />
-                        <div className="meta">
+                        <div className="img-container">
+                            <Avatar src={contact.profilePicture} alt={contact.name + " Profile Picture"} />
+                        </div>
+                        <div style={{display: "inline-block"}} className="meta">
                             <p className="display-name name">{contact.name}</p>
-                            <p className="preview">
+                            {recent && <p className="preview">
                                 {recent?.sender === firebase?.auth?.currentUser?.uid && <span>You: </span>} 
                                 {recent?.attachments?.length === 0 ? recent?.body : "Picture"}
-                            </p>
+                            </p>}
                         </div>
                     </div>}
                 </li> 
