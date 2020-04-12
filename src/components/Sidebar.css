@@ -21,6 +21,11 @@
   height: 270px;
 }
 
+.profile-preview{
+  width: 100% !important;
+  border-radius: 0 !important;
+}
+
 .sidepanel #profile.expanded .wrap p {
   margin-top: 20px;
 }
@@ -50,11 +55,6 @@
   transition: 0.3s height ease;
 }
 
-@media screen and (max-width: 800px) {
-  .sidepanel #profile .wrap {
-    height: 55px;
-  }
-}
 
 .sidepanel #profile .wrap img {
   width: 50px;
@@ -526,6 +526,11 @@ a.normalize {
       /* left: 2px; */
     }
 
+    .content .message-input{
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
     .sidepanel {
         width: 58px;
         min-width: 58px;
@@ -534,7 +539,7 @@ a.normalize {
     .sidepanel #profile {
         width: 100%;
         margin: 0 auto;
-        padding: 5px 0 0 0;
+        /* padding: 5px 0 0px 0; */
         background: var(--sidebar-accent-color);
     }
 
@@ -573,8 +578,8 @@ a.normalize {
         width: 100%;
     }
     .sidepanel #contacts ul li.contact {
-        padding: 6px 0 36px 8px;
-        margin-bottom: 15px;
+        padding: 6px 0 6px 8px;
+        /* margin-bottom: 15px; */
     }
     .sidepanel #contacts {
         height: calc(100% - 149px);

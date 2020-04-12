@@ -17,6 +17,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ImageIcon from '@material-ui/icons/Image';
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
 import MessageTwoToneIcon from '@material-ui/icons/MessageTwoTone';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 
 const componentDecorator = (href, text, key) => (
     <a href={href} key={key} target="_blank" rel="noopener noreferrer">
@@ -100,6 +102,8 @@ const MessageInput = props => {
         }
     }
 
+    console.log(files.length)
+
     const onEmojiClick = (event, emojiObject) => {
         console.log(emojiObject)
         setMessage(msg => msg + emojiObject.emoji);
@@ -113,10 +117,14 @@ const MessageInput = props => {
                 {open && <Picker onEmojiClick={onEmojiClick} />}
                 <form className="wrap" onSubmit={sendHandler}>
                     <input type="text" onChange={InputHandler} value={message} placeholder="Write your message..." />
-                    <span className="attachment-container emoji-picker-button" onClick={() => setOpen(o => !o)}><span role="img" aria-label="emoji picker button">😀</span></span>
+                    <Tooltip arrow title="Open Emoji Picker">
+                        <span className="attachment-container emoji-picker-button" onClick={() => setOpen(o => !o)}><span role="img" aria-label="emoji picker button">😀</span></span>
+                    </Tooltip>
                     <input onChange={filePickHandler} id="attachment-loader" type="file" style={{display: "none"}}/>
-                    <label htmlFor="attachment-loader" className="attachment-container"><ImageIcon/></label>
-                    <button type="submit" className="submit"><SendTwoToneIcon/></button>
+                    <Tooltip arrow title="add an image">
+                        <label htmlFor="attachment-loader" className="attachment-container"><ImageIcon/></label>
+                    </Tooltip>
+                    <button type="submit" disabled={message.length <= 0 && files.length <= 0} className="submit"><SendTwoToneIcon/></button>
                 </form>
             </div>
         </ClickAwayListener>
@@ -126,6 +134,7 @@ const MessageInput = props => {
 const Message = ({message, index, conversation, previous, next}) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const [multi, setMulti] = useState(false)
+    // const images = message.attachments
    
     useEffect(() => {
         setMulti((next?.sender !== message.sender))
@@ -172,8 +181,11 @@ const Message = ({message, index, conversation, previous, next}) => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={() => {handleDelete();handleClose()}}>Delete</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <CopyToClipboard text={message?.body}>
+                        <span>Copy Text</span>
+                    </CopyToClipboard>
+                </MenuItem>
             </Menu>
         </li >
     )
@@ -228,7 +240,7 @@ const Conversation = (props => {
     }
     
     return ( 
-        <div className = "content">
+        <main className = "content">
             {!props.empty && !props.isNew &&
                 <>
                     <ConversationHeader convInfo={other}/>
@@ -283,7 +295,7 @@ const Conversation = (props => {
                     </div>
                 </>
             }
-        </div>
+        </main>
     );
 })
 

@@ -42,7 +42,6 @@ const RegisterPage = props => {
             await firebase.db.collection("users").doc(user.uid).update({
                 name: user.displayName,
                 uid: user.uid,
-                profilePicture: user.photoURL
             })
         } catch (err) {
             await firebase.db.collection("users").doc(user.uid).set({

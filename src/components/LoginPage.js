@@ -39,14 +39,13 @@ const LoginPage = props => {
             await firebase.db.collection("users").doc(user.uid).update({
                 name: user.displayName,
                 uid: user.uid,
-                profilePicture: user.photoURL
             })
         }catch(err){
             await firebase.db.collection("users").doc(user.uid).set({
                 name: user.displayName,
                 uid: user.uid,
                 profilePicture: user.photoURL,
-                status: "online"
+                status: "online",
             })
         }
         props.history.push("/")

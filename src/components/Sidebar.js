@@ -9,6 +9,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone'
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
+import ImageUpload from "./ImageUpload"
 
 const SidebarHeader = withRouter(props => {
     const {currentUser} = props
@@ -29,7 +30,7 @@ const SidebarHeader = withRouter(props => {
                     </ClickAwayListener>
                     <div className="user">
                         <p className="display-name">{currentUser.name}</p>
-                        <i className="fa fa-chevron-down expand-button" onClick={() => setHeaderExpanded(s => !s)} aria-hidden="true"></i>
+                    <i className="fa fa-chevron-down expand-button" onClick={() => setHeaderExpanded(s => !s)} aria-hidden="true"></i>
                     </div>
                     <div id="status-options" className={statusExpanded ? "active" : ""}>
                         <ul>
@@ -46,16 +47,10 @@ const SidebarHeader = withRouter(props => {
                         </ul>
                     </div>
                 <div id="expanded" className={headerExpanded ? "expanded" : ""}> 
-                        <label htmlFor="twitter"><i className="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mikeross" />
-                        <label htmlFor="twitter"><i className="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="ross81" />
-                        <label htmlFor="twitter"><i className="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mike.ross" />
-                        <button onClick={async () => firebase.logout().then(() => props.history.push("/login"))}>Logout</button>
-                    </div>
+                        <ImageUpload className="profile-preview" value={currentUser.profilePicture} center/>
                 </div>
             </div>
+        </div>
     )
 })
 
