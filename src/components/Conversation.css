@@ -4,6 +4,8 @@
     padding: 0;
 }
 
+
+
 .contact-profile * {
     color: var(--sender-text-color);
 }
@@ -406,6 +408,7 @@
     align-items: center;
     opacity: .5;
     flex-direction: column;
+    color: var(--sender-text-color)
 }
 
 .empty svg{

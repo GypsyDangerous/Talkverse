@@ -36,13 +36,13 @@
   line-height: 0.95;
 }
 
-.sidepanel #profile.expanded .wrap i.expand-button {
+.sidepanel #profile.expanded .wrap .expand-button {
   /* -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
     -webkit-transform: scaleY(-1); */
-  transform: rotate(540deg);
-  filter: FlipH;
-  -ms-filter: "FlipH";
+  transform: rotate(180deg);
+  /* filter: FlipH;
+  -ms-filter: "FlipH"; */
 }
 
 .sidepanel #profile .wrap {
@@ -120,16 +120,15 @@
   }
 }
 
-.sidepanel #profile .wrap i.expand-button {
-  float: right;
-  font-size: 0.8em;
+.sidepanel #profile .wrap .expand-button {
+  /* font-size: 0.8em; */
   cursor: pointer;
   color: var(--sender-text-color);
   transition: 0.3s ease-in-out;
 }
 
 @media screen and (max-width: 800px) {
-  .sidepanel #profile .wrap i.expand-button {
+  .sidepanel #profile .wrap .expand-button {
     display: none;
   }
 }
@@ -223,6 +222,7 @@
 
 .sidepanel #profile .wrap #status-options ul li p {
   padding-left: 22px;
+  color: var(--text-color)
 }
 
 .sidepanel
@@ -376,7 +376,7 @@
 }
 
 .sidepanel #contacts::-webkit-scrollbar {
-  width: 8px;
+  width: 80px;
   background: var(--sidebar-color);
 }
 
@@ -445,6 +445,7 @@
 .sidepanel #contacts ul li.contact .wrap .meta {
   padding: 5px 0 0 0;
   color: var(--sender-text-color);
+  width: 85%;
 }
 
 .sidepanel #contacts ul li.contact .wrap .meta .name {

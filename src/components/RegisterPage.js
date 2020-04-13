@@ -17,7 +17,6 @@ const RegisterPage = props => {
     const formSubmitHandler = async e => {
         e.preventDefault()
         try {
-            // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             const user = await firebase.register(userName, email, password)
             firebase.db.collection("users").doc(user.uid).set({
                 name: userName,

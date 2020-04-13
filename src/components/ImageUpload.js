@@ -29,15 +29,12 @@ const ImageUpload = props => {
 
   const pickedHandler = async event => {
     let pickedFile = file;
-    let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
       setIsValid(true);
-      fileIsValid = true;
     } else {
       setIsValid(!!previewUrl);
-      fileIsValid = !!previewUrl || isValid;
     }
 
     const storageRef = firebase.storage.ref();

@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone'
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone'
 import ImageUpload from "./ImageUpload"
+import ArrowDropDownCircleTwoToneIcon from '@material-ui/icons/ArrowDropDownCircleTwoTone';
 
 const SidebarHeader = withRouter(props => {
     const {currentUser} = props
@@ -30,7 +31,7 @@ const SidebarHeader = withRouter(props => {
                     </ClickAwayListener>
                     <div className="user">
                         <p className="display-name">{currentUser.name}</p>
-                    <i className="fa fa-chevron-down expand-button" onClick={() => setHeaderExpanded(s => !s)} aria-hidden="true"></i>
+                    <ArrowDropDownCircleTwoToneIcon className="expand-button" onClick={() => setHeaderExpanded(s => !s)} aria-hidden="true"/>
                     </div>
                     <div id="status-options" className={statusExpanded ? "active" : ""}>
                         <ul>
@@ -42,7 +43,7 @@ const SidebarHeader = withRouter(props => {
                                     key={sttus}
                                 >
                                     <span className="status-circle"></span><p>{sttus}</p>
-                            </li>
+                                </li>
                             ))}
                         </ul>
                     </div>

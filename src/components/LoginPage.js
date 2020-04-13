@@ -24,7 +24,7 @@ const LoginPage = props => {
             await firebase.login(email, password)
             props.history.push("/")
         }catch(err){
-
+            alert(err)
         }
     }
 

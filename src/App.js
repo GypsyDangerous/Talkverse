@@ -45,10 +45,10 @@ function App() {
     </Router>
   ) : <div className={`app ${isDark ? "app--dark" : ""}`}><Loader
     loaded={false}
-    lines={13}
-    length={20}
-    width={10}
-    radius={30}
+    lines={15}
+    length={0}
+    width={15}
+    radius={35}
     corners={1}
     rotate={0}
     direction={1}
@@ -61,7 +61,7 @@ function App() {
     zIndex={2e9}
     top="50%"
     left="50%"
-    scale={2.0}
+    scale={3.0}
     loadedClassName="loadedContent"
   /></div>
 }
