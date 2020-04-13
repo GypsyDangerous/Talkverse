@@ -9,7 +9,6 @@ import RegisterPage from './components/RegisterPage';
 import Loader from "react-loader"
 
 function App() {
-
   const [isDark, setIsDark] = useState(false)
   const [firebaseInit, setFirebaseInit] = useState(false);
 
@@ -18,7 +17,6 @@ function App() {
     setIsDark(mode => !mode)
     localStorage.setItem("color mode", not)
   }
-
 
   useEffect(() => {
     const mode = localStorage.getItem("color mode")

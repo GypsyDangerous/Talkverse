@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 
 const Contact = props => {
-    // console.log(props)
     const [contact, setContact] = useState()
     const [conversation, setConversation] = useState()
     const [recent, setRecent] = useState()
@@ -37,25 +36,23 @@ const Contact = props => {
     }, [])
 
     return (
-        <>
-            {conversation && <NavLink to={"/conversations/" + conversation.convid} activeClassName="active" className="normalize">
-                <li className="contact">
-                    {contact && <div className="wrap">
-                        <span className={`contact-status ${contact.status}`}></span>
-                        <div className="img-container">
-                            <Avatar src={contact.profilePicture} alt={contact.name + " Profile Picture"} />
-                        </div>
-                        <div style={{display: "inline-block"}} className="meta">
-                            <p className="display-name name">{contact.name}</p>
-                            {recent && <p className="preview">
-                                {recent?.sender === firebase?.auth?.currentUser?.uid && <span>You: </span>} 
-                                {recent?.attachments?.length === 0 ? recent?.body : "Picture"}
-                            </p>}
-                        </div>
-                    </div>}
-                </li> 
-            </NavLink>}
-        </>
+        <NavLink to={"/conversations/" + conversation?.convid} activeClassName="active" className="normalize">
+            <li className="contact">
+                {contact && <div className="wrap">
+                    <span className={`contact-status ${contact.status}`}></span>
+                    <div className="img-container">
+                        <Avatar src={contact.profilePicture} alt={contact.name + " Profile Picture"} />
+                    </div>
+                    <div style={{display: "inline-block"}} className="meta">
+                        <p className="display-name name">{contact.name}</p>
+                        {recent && <p className="preview">
+                            {recent?.sender === firebase?.auth?.currentUser?.uid && <span>You: </span>} 
+                            {recent?.attachments?.length === 0 ? recent?.body : "Picture"}
+                        </p>}
+                    </div>
+                </div>}
+            </li> 
+        </NavLink>
     );
 }
 
