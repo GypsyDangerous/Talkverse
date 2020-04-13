@@ -13,7 +13,6 @@ import Message from "./Message"
 
 
 const ConversationHeader = props => {
-
     const [recipient, setRecipient] = useState();
 
     useEffect(() => {
@@ -24,16 +23,10 @@ const ConversationHeader = props => {
         }
     }, [props]);
 
-
     return (
         <header className="contact-profile">
             <div className="conversation-header-img"><Avatar src={recipient?.profilePicture} alt={recipient?.name?.toUpperCase()} /></div>
             <p className="display-name">{recipient?.name}</p>
-            {/* <div className="social-media">
-                <i className="fa fa-facebook" aria-hidden="true"></i>
-                <i className="fa fa-twitter" aria-hidden="true"></i>
-                <i className="fa fa-instagram" aria-hidden="true"></i>
-            </div> */}
         </header>
     )
 }
@@ -49,31 +42,29 @@ const Conversation = props => {
     const contentRef = useRef()
 
     useEffect(() => {
-        const id = (props.match.params.id)
-        firebase.db.collection("conversations").onSnapshot(async snapshot => {
-            try {
-                const me = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(doc => doc.convid === id)[0]
-                setConv(me)
-                const convs = snapshot.docs.filter(doc => doc.id === me?.convid)[0]
-                convs.ref.collection("messages").onSnapshot(msgSnapshot => {
-                    const msgs = msgSnapshot.docs.map(doc => {return {...doc.data(), id: doc.id}})
-                    setMessages(msgs.sort((a, b) => a.sentAt-b.sentAt))
-                })
-                setOther(me?.members?.filter(id => id !== firebase?.auth?.currentUser?.uid)[0])
-            } catch (err) {}
-        })
-
         if (props.isNew) {
-            (async () => {
-                firebase.db.collection("conversations").onSnapshot(async snapshot => {
-                    const contacts = [].concat.apply([], snapshot.docs.map(doc => doc.data()).filter(doc => doc.members.includes(firebase.auth.currentUser.uid)).map(conv => conv.members))
-                    setContacts(!contacts ? [] : contacts.filter(id => id !== firebase.auth.currentUser.uid))
-                })
-                firebase.db.collection("users").onSnapshot(snapshot => {
-                    const users = snapshot.docs.map(doc => doc.data())
-                    setSearchResults(users)
-                })
-            })()
+            firebase.db.collection("conversations").onSnapshot(async snapshot => {
+                const contacts = [].concat.apply([], snapshot.docs.map(doc => doc.data()).filter(doc => doc.members.includes(firebase.auth.currentUser.uid)).map(conv => conv.members))
+                setContacts(!contacts ? [] : contacts.filter(id => id !== firebase.auth.currentUser.uid))
+            })
+            firebase.db.collection("users").onSnapshot(snapshot => {
+                const users = snapshot.docs.map(doc => doc.data())
+                setSearchResults(users)
+            })
+        }else{
+            const id = (props.match.params.id)
+            firebase.db.collection("conversations").onSnapshot(async snapshot => {
+                try {
+                    const me = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(doc => doc.convid === id)[0]
+                    setConv(me)
+                    const convs = snapshot.docs.filter(doc => doc.id === me?.convid)[0]
+                    convs.ref.collection("messages").onSnapshot(msgSnapshot => {
+                        const msgs = msgSnapshot.docs.map(doc => {return {...doc.data(), id: doc.id}})
+                        setMessages(msgs.sort((a, b) => a.sentAt-b.sentAt))
+                    })
+                    setOther(me?.members?.filter(id => id !== firebase?.auth?.currentUser?.uid)[0])
+                } catch (err) {}
+            })
         }
     }, [props])
 
