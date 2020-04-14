@@ -55,12 +55,12 @@ const Message = ({ message, index, conversation, previous, next }) => {
                 <div className="senderimg">
                     <Avatar alt={message?.sender?.toUpperCase()} src={message.senderImg} />
                 </div>}
-            <p className={multi ? "" : "nth-msg"} style={{ fontSize: message?.body?.match(regex1)?.length === message?.body?.length / 2 ? "38px" : "" }}>
+            <pre className={multi ? "" : "nth-msg"} style={{ fontSize: message?.body?.match(regex1)?.length === message?.body?.length / 2 ? "38px" : "" }}>
                 <Linkify componentDecorator={componentDecorator}>{message.body}</Linkify>
                 {message?.attachments?.map((file, i) => (
                     <ModalImage className={message?.body ? "text-img attachment" : "attachment"} key={i} large={file} small={file} alt={"attachment" + (i + index * 2).toString(16)} />
                 ))}
-            </p>
+            </pre>
             <div className={`svg-container ${multi ? "" : "nth-msg"}`}><FontAwesomeIcon icon={faEllipsisV} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} /></div>
             <Menu
                 id="simple-menu"

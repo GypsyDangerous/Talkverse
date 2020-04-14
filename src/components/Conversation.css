@@ -54,9 +54,6 @@
     margin: 0px 12px 0 9px;
 }
 
-.content .contact-profile p {
-    float: left;
-}
 
 .contact-profile .title, .contact-profile button {
     margin-left: 15px;
@@ -109,7 +106,7 @@
     margin: 0px 8px 0 0;
 }
 
-.content .messages li.sent p {
+.content .messages li.sent pre {
     background: var(--sidebar-accent-color);
     color: var(--sender-text-color);
 }
@@ -134,18 +131,22 @@
     flex-direction: row-reverse;
 }
 
-.content .messages li p {
+.content .messages li pre {
     box-shadow: var(--sender-box-shadow);
-    /* overflow-wrap: break-word; */
     word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
     max-width: 40%;
+    margin: 0;
+    font-family: inherit !important;
+    font-size: 16px;
 }
 
 .content .messages li.replies .senderimg {
     margin: 0px 0 0 8px;
 }
 
-.content .messages li.replies p {
+.content .messages li.replies pre {
     background: var(--accent-color);
     color: var(--sender-text-color);
 }
@@ -159,14 +160,14 @@
     margin-top: 7px;
 }
 
-.content .messages li p {
+.content .messages li pre {
     padding: 10px 15px;
     border-radius: 24px;
     line-height: 130%;
 }
 
 @media screen and (min-width: 800px) {
-    .content .messages li p {
+    .content .messages li pre {
         max-width: 40%;
     }
 }
@@ -285,7 +286,7 @@
     color: var(--sender-text-color)
 }
 
-.content .messages li p a {
+.content .messages li pre a {
     color: var(--sender-text-color)
 }
 
