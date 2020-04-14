@@ -25,6 +25,7 @@ const MessageInput = props => {
                 return
             }
         }
+        
         setSending(true)
         const sender = (await firebase.db.collection("users").doc(firebase.auth.currentUser.uid).get()).data()
 
@@ -33,16 +34,22 @@ const MessageInput = props => {
             body: message,
             senderImg: sender.profilePicture || "",
             attachments: files,
-            mid: [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join(''),
+            mid: [...Array(10)].map(i => (Math.random() * 36 | 0).toString(36)).join(''),
             sentAt: Date.now()
         }
 
-        await firebase.db.collection("conversations").doc(props.conversation.convid).collection("messages").add(newMessage)
         setMessage("")
         setFiles([])
-        props.onSend()
         setOpen(false)
+        
         setSending(false)
+        await firebase.db.collection("conversations").doc(props.conversation.convid).collection("messages").add(newMessage)
+        await firebase.db.collection("conversations").doc(props.conversation.convid).update({
+            newest: newMessage
+        })
+        
+        props.onSend()
+        
     }
 
     const filePickHandler = async e => {
@@ -60,6 +67,13 @@ const MessageInput = props => {
         setMessage(msg => msg + emojiObject.emoji);
     }
 
+    const disableEnter = e => {
+        if (e.keyCode === 13 && !e.shiftKey)
+        {
+            sendHandler(e)
+        }
+    }
+
     const [open, setOpen] = useState(false)
 
     return (
@@ -67,7 +81,7 @@ const MessageInput = props => {
             <div className="message-input">
                 {open && <Picker onEmojiClick={onEmojiClick} />}
                 <form className="wrap" onSubmit={sendHandler}>
-                    <input type="text" onChange={InputHandler} value={message} placeholder="Write your message..." />
+                    <textarea onKeyDown={disableEnter} dir="auto" rows="1" className="input" autoFocus type="text" onChange={InputHandler} value={message} placeholder="Write your message..." />
                     <Tooltip arrow title="Open Emoji Picker">
                         <span className="attachment-container emoji-picker-button" onClick={() => setOpen(o => !o)}><span role="img" aria-label="emoji picker button">😀</span></span>
                     </Tooltip>

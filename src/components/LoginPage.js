@@ -13,20 +13,25 @@ const LoginPage = props => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState()
+    const [error, setError] = useState()
 
     if (firebase.auth.currentUser) {
-        return <Redirect to="/" />
+        return <Redirect to="/"/>
     } 
 
     const formSubmitHandler = async e => {
         e.preventDefault()
         try{
+            setError(null)
             await firebase.login(email, password)
             props.history.push("/")
         }catch(err){
-            alert(err)
+            setError(err.code)
         }
     }
+    // auth/user-not-found
+    // auth/wrong-password
+    console.log(error)
 
     const handleGoolgeSignIn = async e => {
         const provider = new firebase.app.auth.GoogleAuthProvider();
@@ -68,6 +73,9 @@ const LoginPage = props => {
                                     <label htmlFor="inputPassword">Password</label>
                                     <input type="checkbox" id="showPassword" checked={showPassword} value={showPassword} onChange={e => setShowPassword(e.target.checked)} />
                                     <label htmlFor="showPassword" className="show-password" style={{ cursor: "pointer" }}><FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} /></label>
+                                    {error  &&
+                                        <p className="error">Invalid Email or Password</p>
+                                    }
                                 </div>
                                 <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
                                 <hr className="my-4" />

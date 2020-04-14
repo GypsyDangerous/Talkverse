@@ -69,18 +69,24 @@ const Sidebar = withRouter(props => {
                 const userdata = { ...doc.data(), id: doc.id }
                 setUserData(userdata)
             })
-            db.collection("conversations").onSnapshot(snapshot => {
-                const contacts = [].concat.apply([], snapshot.docs.map(doc => doc.data()).filter(doc => doc.members.includes(firebase.auth.currentUser.uid)).map(conv => conv.members))
-                setContacts(!contacts ? [] : contacts.filter(id => id !== firebase.auth.currentUser.uid))
+            db.collection("conversations").onSnapshot(async snapshot => {
+                const contacts = [].concat.apply([], snapshot.docs.map(doc => doc.data()).filter(doc => doc.members.includes(firebase.auth.currentUser.uid)).map(conv => {return {members: conv.members, newest: conv.newest}}))
+                let final = []
+                for (const contact of contacts.sort((b, a) => a.newest?.sentAt - b.newest?.sentAt)){
+                    const id = contact.members.filter(id => id !== firebase.auth.currentUser.uid)[0]
+                    const newest = contact.newest
+                    final.push({id,newest})
+                }
+                setContacts(final)
             })
         }
     }
 
-    const updateUser = async ({status, twitter, github, instagram}) => {
+    const updateUser = async ({status}) => {
         const db = firebase.db
         if(status){
             db.collection("users").doc(currentUser.uid).update({
-                status: status
+                status
             })
         }
     }
@@ -108,8 +114,8 @@ const Sidebar = withRouter(props => {
             </div>
             <div id="contacts">
                 <ul>
-                    {contacts && contacts.map((c, i) => (
-                        <Contact key={c} contact={c} />
+                    {contacts?.map((c, i) => (
+                        <Contact key={i} contact={c.id} recent={c.newest} />
                     ))}
                 </ul>
             </div>

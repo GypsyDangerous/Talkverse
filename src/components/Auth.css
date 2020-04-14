@@ -403,3 +403,12 @@ hr{
 .card-body a {
     color: var(--grey) !important
 }
+
+.error{
+    width: 100%;
+    text-align: center;
+    padding-top: 5px;
+    margin-bottom: -10px !important;
+    color: var(--error-color);
+    font-weight: 500;
+}

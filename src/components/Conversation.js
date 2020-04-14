@@ -16,11 +16,9 @@ const ConversationHeader = props => {
     const [recipient, setRecipient] = useState();
 
     useEffect(() => {
-        if(props.convInfo){
-            firebase.db.collection("users").doc(props.convInfo).onSnapshot(snapshot => {
-                setRecipient(snapshot.data())
-            })
-        }
+        firebase.db.collection("users").doc(props?.convInfo || " ").onSnapshot(snapshot => {
+            setRecipient(snapshot.data())
+        })
     }, [props]);
 
     return (
@@ -55,15 +53,24 @@ const Conversation = props => {
             const id = (props.match.params.id)
             firebase.db.collection("conversations").onSnapshot(async snapshot => {
                 try {
-                    const me = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(doc => doc.convid === id)[0]
+                    const mine = await snapshot.query.where(firebase.documentId(), "==", id).get()
+                    const minedoc = mine.docs[0]
+                    const me = {...minedoc.data(), convid: minedoc.id}
+
+
                     setConv(me)
                     const convs = snapshot.docs.filter(doc => doc.id === me?.convid)[0]
-                    convs.ref.collection("messages").onSnapshot(msgSnapshot => {
-                        const msgs = msgSnapshot.docs.map(doc => {return {...doc.data(), id: doc.id}})
-                        setMessages(msgs.sort((a, b) => a.sentAt-b.sentAt))
+                    convs.ref.collection("messages").onSnapshot(async msgSnapshot => {
+                        const sorted = await msgSnapshot.query.orderBy("sentAt", "asc")
+                        const sortedData = await sorted.get()
+                        const sortedMsgs = sortedData.docs.map(doc => { return { ...doc.data(), id: doc.id } })
+                        setMessages(sortedMsgs);
+
                     })
                     setOther(me?.members?.filter(id => id !== firebase?.auth?.currentUser?.uid)[0])
-                } catch (err) {}
+                } catch (err) {
+                    console.log(err.message)
+                }
             })
         }
     }, [props])
@@ -71,8 +78,7 @@ const Conversation = props => {
     const createConv = async uid => {
         const me = firebase?.auth?.currentUser?.uid
         const members = [me, uid]
-        const conv = {members}
-        await firebase.db.collection("conversations").add(conv)
+        await firebase.db.collection("conversations").add({ members })
     }
     
     return ( 

@@ -48,6 +48,10 @@ class Firebase {
         return result
     }
     
+    documentId(){
+        return app.firestore.FieldPath.documentId()
+    }
+
     logout(){
         return this.auth.signOut()
     }

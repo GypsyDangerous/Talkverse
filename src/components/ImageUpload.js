@@ -67,7 +67,6 @@ const ImageUpload = props => {
           {!previewUrl && <p>Please pick an image.</p>}
         </div>
       </div>
-      {!isValid && <p>{props.errorText}</p>}
     </div>
   );
 };

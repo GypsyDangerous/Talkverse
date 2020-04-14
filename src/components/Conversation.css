@@ -190,16 +190,20 @@
     overflow: hidden;
     box-shadow: var(--base-box-shadow);
     background: var(--accent-color);
-    /* height: 500px; */
+    height: fit-content;
 }
 
-.content .message-input .wrap input {
+.content .message-input .wrap .input {
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
     border: none;
-    padding: 11px 32px 10px 15px;
+    padding: 15px 32px 15px 19px;
     font-size: 1em;
     color: var(--sender-text-color);
     background: var(--accent-color);
+    outline: none !important;
+    resize: none;
+    white-space: pre-wrap;
+    line-height: 1rem;
 }
 
 @media screen and (max-width: 800px) {

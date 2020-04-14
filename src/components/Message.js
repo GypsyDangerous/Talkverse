@@ -33,9 +33,16 @@ const Message = ({ message, index, conversation, previous, next }) => {
     };
 
     const handleDelete = async () => {
-        if (message.sender !== firebase?.auth?.currentUser?.uid) return
+        if (message.sender !== firebase?.auth?.currentUser?.uid) {
+            return
+        }
         try {
-            await firebase.db.collection("conversations").doc(conversation.uuid).collection("messages").doc(message.id).delete()
+            await firebase.db.collection("conversations").doc(conversation.convid).collection("messages").doc(message.id).delete()
+            const messages = await firebase.db.collection("conversations").doc(conversation.convid).collection("messages").orderBy("sentAt","desc").get()
+            const msgs = messages.docs.map(doc => { return { ...doc.data(), id: doc.id } })
+            await firebase.db.collection("conversations").doc(conversation.convid).update({
+                newest: msgs[0]
+            })
         } catch (err) { console.log(err.message) }
     }
 

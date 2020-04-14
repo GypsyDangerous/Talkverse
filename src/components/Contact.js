@@ -6,7 +6,7 @@ import { Avatar } from '@material-ui/core';
 const Contact = props => {
     const [contact, setContact] = useState()
     const [conversation, setConversation] = useState()
-    const [recent, setRecent] = useState()
+    const recent = props.recent
 
     const getContact = async () => {
         const id = props.contact
@@ -14,26 +14,19 @@ const Contact = props => {
         db.collection("users").doc(id).onSnapshot(snapshot => {
             setContact(snapshot.data())
         })
-
     }
 
     const getConversation = async () => {
         firebase.db.collection("conversations").onSnapshot(snapshot => {
             const thisConv = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(conv => conv.members.includes(props.contact) && conv.members.includes(firebase.auth.currentUser.uid))[0]
             setConversation(thisConv)
-            const convs = snapshot.docs.filter(doc => doc.id === thisConv?.convid)[0]
-            
-            convs.ref.collection("messages").onSnapshot(msgSnapshot => {
-                const msgs = msgSnapshot.docs.map(doc => doc.data())
-                setRecent(msgs.sort((a, b) => b.sentAt - a.sentAt)[0])
-            })
         })
     }
 
     useEffect(() => {
         getContact()
         getConversation() // eslint-disable-next-line
-    }, [])
+    }, [props])
 
     return (
         <NavLink to={"/conversations/" + conversation?.convid} activeClassName="active" className="normalize">
