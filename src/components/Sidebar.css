@@ -513,6 +513,10 @@ a.normalize {
   background: var(--accent-color) !important;
 }
 
+.footertip{
+  margin-left: 5px;
+}
+
 @media screen and (max-width: 800px) {
     .sidepanel #bottom-bar .bottom-button i:before {
       position: relative;

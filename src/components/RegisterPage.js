@@ -55,8 +55,6 @@ const RegisterPage = props => {
         props.history.push("/")
     }
 
-    // auth/email-already-in-use
-
     return (
         <div className="container">
         <div className="row">
