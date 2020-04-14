@@ -5,14 +5,12 @@ import firebase from "../firebase"
 const ImageUpload = props => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
-  const [isValid, setIsValid] = useState(false);
 
   const filePickerRef = useRef();
 
   useEffect(() => {
     if(props.value){
       setPreviewUrl(props.value)
-      setIsValid(true)
     }
   }, [props])
 
@@ -32,11 +30,7 @@ const ImageUpload = props => {
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
-      setIsValid(true);
-    } else {
-      setIsValid(!!previewUrl);
     }
-
     const storageRef = firebase.storage.ref();
     const fileRef = storageRef.child([...Array(10)].map(_ => (Math.random() * 36 | 0).toString(36)).join`` + pickedFile.name);
     await fileRef.put(pickedFile)
@@ -44,7 +38,6 @@ const ImageUpload = props => {
     await firebase.db.collection("users").doc(firebase.auth.currentUser.uid).update({
       profilePicture: url
     })
-
   };
 
   const pickImageHandler = () => {

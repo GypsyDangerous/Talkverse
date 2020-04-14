@@ -29,9 +29,6 @@ const LoginPage = props => {
             setError(err.code)
         }
     }
-    // auth/user-not-found
-    // auth/wrong-password
-    console.log(error)
 
     const handleGoolgeSignIn = async e => {
         const provider = new firebase.app.auth.GoogleAuthProvider();
@@ -69,9 +66,9 @@ const LoginPage = props => {
                                     <label htmlFor="inputEmail">Email address</label>
                                 </div>
                                 <div className="form-label-group">
-                                    <input type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} id="inputPassword" className="form-control" placeholder="Password" required />
+                                    <input autoComplete="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} id="inputPassword" className="form-control" placeholder="Password" required />
                                     <label htmlFor="inputPassword">Password</label>
-                                    <input type="checkbox" id="showPassword" checked={showPassword} value={showPassword} onChange={e => setShowPassword(e.target.checked)} />
+                                    <input  type="checkbox" id="showPassword" checked={showPassword} value={showPassword} onChange={e => setShowPassword(e.target.checked)} />
                                     <label htmlFor="showPassword" className="show-password" style={{ cursor: "pointer" }}><FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} /></label>
                                     {error  &&
                                         <p className="error">Invalid Email or Password</p>

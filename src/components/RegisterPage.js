@@ -13,6 +13,7 @@ const RegisterPage = props => {
     const [password, setPassword] = useState()
     const [userName, setUserName] = useState()
     const [showPassword, setShowPassword] = useState(false)
+    const [error, setError] = useState()
 
     const formSubmitHandler = async e => {
         e.preventDefault()
@@ -26,7 +27,8 @@ const RegisterPage = props => {
             })
             props.history.push("/")
         } catch (err) {
-            alert(err)
+            console.log(err)
+            setError(err.code)
         }
     }
 
@@ -53,6 +55,8 @@ const RegisterPage = props => {
         props.history.push("/")
     }
 
+    // auth/email-already-in-use
+
     return (
         <div className="container">
         <div className="row">
@@ -62,15 +66,18 @@ const RegisterPage = props => {
                         <h5 className="card-title text-center">Sign up</h5>
                         <form className="form-signin" onSubmit={formSubmitHandler}>
                             <div className="form-label-group">
-                                <input type="text" id="inputUsername" value={userName} onChange={e => setUserName(e.target.value)} className="form-control" placeholder="Email address" required autoFocus />
+                                <input autoComplete="username" minlength="6" type="text" id="inputUsername" value={userName} onChange={e => setUserName(e.target.value)} className="form-control" placeholder="Username" required autoFocus />
                                 <label htmlFor="inputUsername">Username</label>
                             </div>
                             <div className="form-label-group">
-                                <input type="email" id="inputEmail" value={email} onChange={e => setEmail(e.target.value)} className="form-control" placeholder="Email address" required />
+                                <input autoComplete="email" type="email" id="inputEmail" value={email} onChange={e => setEmail(e.target.value)} className="form-control" placeholder="Email address" required />
                                 <label htmlFor="inputEmail">Email address</label>
+                                {error === "auth/email-already-in-use" &&
+                                    <p className="error">Email already in use</p>
+                                }
                             </div>
                             <div className="form-label-group">
-                                <input type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} id="inputPassword" className="form-control" placeholder="Password" required />
+                                <input autoComplete="new-password" minlength="8" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} id="inputPassword" className="form-control" placeholder="Password" required />
                                 <label htmlFor="inputPassword">Password</label>
                                 <input type="checkbox" id="showPassword" checked={showPassword} onChange={e => setShowPassword(e.target.checked)} />
                                 <label htmlFor="showPassword" className="show-password" style={{ cursor: "pointer" }}><FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} /></label>
