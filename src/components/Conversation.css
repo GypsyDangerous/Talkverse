@@ -416,6 +416,10 @@
     color: var(--sender-text-color)
 }
 
+.empty *{
+    text-align: center;
+}
+
 .empty svg{
     /* transform: scale(10); */
     font-size: 10rem;
