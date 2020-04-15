@@ -57,9 +57,24 @@ const Message = ({ message, index, conversation, previous, next }) => {
                 </div>}
             <pre className={multi ? "" : "nth-msg"} style={{ fontSize: message?.body?.match(regex1)?.length === message?.body?.length / 2 ? "38px" : "" }}>
                 <Linkify componentDecorator={componentDecorator}>{message.body}</Linkify>
-                {message?.attachments?.map((file, i) => (
-                    <ModalImage className={message?.body ? "text-img attachment" : "attachment"} key={i} large={file} small={file} alt={"attachment" + (i + index * 2).toString(16)} />
-                ))}
+                {message?.attachments?.map((file, i) => {
+                    if (file.type?.split("/")[0] === "image"){
+                        return <ModalImage className={message?.body ? "text-img attachment" : "attachment"} key={i} large={file.url || file} small={file.url || file} alt={"attachment" + (i + index * 2).toString(16)} />
+                    }
+                    else if(file.type?.split("/")[0] === "video"){
+                        return <video controls className={message?.body ? "text-img attachment" : "attachment"} key={i} src={file.url}/>
+                    }else if(file.type?.split("/")[0] === "audio"){
+                        return <audio
+                            controls
+                            src={file.url}
+                            >
+                                Your browser does not support the
+                                <code>audio</code> element.
+                            </audio>
+                    }else{
+                        return <a href={file.url || file} download>Download Attachment</a>
+                    }
+                })}
             </pre>
             <div className={`svg-container ${multi ? "" : "nth-msg"}`}><FontAwesomeIcon icon={faEllipsisV} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} /></div>
             <Menu
