@@ -9,6 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 const MessageInput = props => {
     const [message, setMessage] = useState("")
     const [files, setFiles] = useState([])
+    const [previews, setPreviews] = useState()
     const [sending, setSending] = useState(false)
 
     const InputHandler = e => {
@@ -55,11 +56,12 @@ const MessageInput = props => {
     const filePickHandler = async e => {
         const file = e.target.files[0]
         if (file) {
+            console.log(file.type)
             const storageRef = firebase.storage.ref();
             const fileRef = storageRef.child([...Array(10)].map(_ => (Math.random() * 36 | 0).toString(36)).join`` + file.name);
             await fileRef.put(file)
             const url = await fileRef.getDownloadURL()
-            setFiles(f => [...f, url])
+            setFiles(f => [...f, {url, type:file.type}])
         }
     }
 
