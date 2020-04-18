@@ -9,6 +9,7 @@ import punycode from "punycode";
 import Avatar from '@material-ui/core/Avatar'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useCallback } from 'react';
 
 const componentDecorator = (href, text, key) => (
     <a href={href} key={key} target="_blank" rel="noopener noreferrer">
@@ -16,23 +17,23 @@ const componentDecorator = (href, text, key) => (
     </a>
 );
 
-const Message = ({ message, index, conversation, previous, next }) => {
+const Message = ({ message, index, conversation, next }) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const [multi, setMulti] = useState(false)
 
     useEffect(() => {
-        setMulti((next?.sender !== message.sender))
-    }, [previous, message, next])
+        setMulti(next?.sender !== message.sender)
+    }, [message, next])
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setAnchorEl(null)
-    }
+    },[])
 
-    const handleClick = (event) => {
+    const handleClick = useCallback((event) => {
         setAnchorEl(event.currentTarget);
-    };
+    },[])
 
-    const handleDelete = async () => {
+    const handleDelete = useCallback(async () => {
         if (message.sender !== firebase?.auth?.currentUser?.uid) {
             return
         }
@@ -43,9 +44,11 @@ const Message = ({ message, index, conversation, previous, next }) => {
             await firebase.db.collection("conversations").doc(conversation.convid).update({
                 newest: msgs[0]
             })
+            handleClose()
         } catch (err) { console.log(err.message) }
-    }
+    },[conversation, message, handleClose])
 
+    // used for detecting emojis in the message
     const regex1 = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
     // const regex2 = /(\u00a9|\u00ae | [\u2000 -\u3300] |\ud83c[\ud000 -\udfff]|\ud83d[\ud000 -\udfff]|\ud83e[\ud000 -\udfff])/g
 
@@ -54,7 +57,8 @@ const Message = ({ message, index, conversation, previous, next }) => {
             {multi &&
                 <div className="senderimg">
                     <Avatar alt={message?.sender?.toUpperCase()} src={message.senderImg} />
-                </div>}
+                </div>
+            }
             <pre className={multi ? "" : "nth-msg"} style={{ fontSize: message?.body?.match(regex1)?.length === message?.body?.length / 2 ? "38px" : "" }}>
                 <Linkify componentDecorator={componentDecorator}>{message.body}</Linkify>
                 {message?.attachments?.map((file, i) => {
@@ -81,10 +85,10 @@ const Message = ({ message, index, conversation, previous, next }) => {
                 id="simple-menu"
                 anchorEl={anchorEl}
                 keepMounted
-                open={Boolean(anchorEl)}
+                open={!!anchorEl}
                 onClose={handleClose}
             >
-                <MenuItem onClick={() => { handleDelete(); handleClose() }}>Delete</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
                 <MenuItem onClick={handleClose}>
                     <CopyToClipboard text={message?.body}>
                         <span>Copy Text</span>

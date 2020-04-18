@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import "./Auth.css"
 import firebase from "../firebase"
 import { withRouter } from 'react-router';
@@ -15,11 +15,7 @@ const LoginPage = props => {
     const [showPassword, setShowPassword] = useState()
     const [error, setError] = useState()
 
-    if (firebase.auth.currentUser) {
-        return <Redirect to="/"/>
-    } 
-
-    const formSubmitHandler = async e => {
+    const formSubmitHandler = useCallback(async e => {
         e.preventDefault()
         try{
             setError(null)
@@ -28,9 +24,9 @@ const LoginPage = props => {
         }catch(err){
             setError(err.code)
         }
-    }
+    },[password, email, props.history])
 
-    const handleGoolgeSignIn = async e => {
+    const handleGoolgeSignIn = useCallback(async e => {
         const provider = new firebase.app.auth.GoogleAuthProvider();
         const result = await firebase.auth.signInWithPopup(provider)
         const user = result.user
@@ -51,7 +47,11 @@ const LoginPage = props => {
             })
         }
         props.history.push("/")
-    }
+    },[props.history])
+
+    if (firebase.auth.currentUser) {
+        return <Redirect to="/"/>
+    } 
 
     return (
         <div className="container">

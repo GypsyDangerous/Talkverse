@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import "./Auth.css"
 import firebase from "../firebase"
 import { withRouter } from 'react-router';
@@ -8,14 +8,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
 const RegisterPage = props => {
-
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [userName, setUserName] = useState()
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState()
 
-    const formSubmitHandler = async e => {
+    const formSubmitHandler = useCallback(async e => {
         e.preventDefault()
         try {
             const user = await firebase.register(userName, email, password)
@@ -30,9 +29,9 @@ const RegisterPage = props => {
             console.log(err)
             setError(err.code)
         }
-    }
+    },[email, password, props.history, userName])
 
-    const handleGoolgeSignIn = async e => {
+    const handleGoolgeSignIn = useCallback(async e => {
         const provider = new firebase.app.auth.GoogleAuthProvider();
         const result = await firebase.auth.signInWithPopup(provider)
         const user = result.user
@@ -53,7 +52,7 @@ const RegisterPage = props => {
             })
         }
         props.history.push("/")
-    }
+    },[props.history])
 
     return (
         <div className="container">

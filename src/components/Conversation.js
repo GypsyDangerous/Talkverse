@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import "./Conversation.css"
 import Avatar from '@material-ui/core/Avatar'
 import firebase from "../firebase"
@@ -56,8 +56,6 @@ const Conversation = props => {
                     const mine = await snapshot.query.where(firebase.documentId(), "==", id).get()
                     const minedoc = mine.docs[0]
                     const me = {...minedoc.data(), convid: minedoc.id}
-
-
                     setConv(me)
                     const convs = snapshot.docs.filter(doc => doc.id === me?.convid)[0]
                     convs.ref.collection("messages").onSnapshot(async msgSnapshot => {
@@ -65,7 +63,6 @@ const Conversation = props => {
                         const sortedData = await sorted.get()
                         const sortedMsgs = sortedData.docs.map(doc => { return { ...doc.data(), id: doc.id } })
                         setMessages(sortedMsgs);
-
                     })
                     setOther(me?.members?.filter(id => id !== firebase?.auth?.currentUser?.uid)[0])
                 } catch (err) {
@@ -75,13 +72,13 @@ const Conversation = props => {
         }
     }, [props])
 
-    const createConv = async uid => {
+    const createConv = useCallback(async uid => {
         const me = firebase?.auth?.currentUser?.uid
         const members = [me, uid]
         await firebase.db.collection("conversations").add({ members })
-    }
+    },[])
     
-    return ( 
+    return (
         <main className = "content">
             {!props.empty && !props.isNew &&
                 <>

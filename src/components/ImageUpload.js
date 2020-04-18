@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import './ImageUpload.css';
 import firebase from "../firebase"
 
@@ -40,9 +40,9 @@ const ImageUpload = props => {
     })
   };
 
-  const pickImageHandler = () => {
+  const pickImageHandler = useCallback(() => {
     filePickerRef.current.click();
-  };
+  },[])
 
   return (
     <div>

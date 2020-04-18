@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import "./Sidebar.css"
 import Contact from "./Contact"
 import firebase from "../firebase"
@@ -37,7 +37,7 @@ const SidebarHeader = withRouter(props => {
                         <ul>
                             {["online", "away", "busy", "offline"].map(sttus => (
                                 <li 
-                                    onClick={() => props.updateUser({status: sttus})} 
+                                    onClick={() => props.updateUser(sttus)} 
                                     id={`status-${sttus}`} 
                                     className={status === sttus ? "active" : ""}
                                     key={sttus}
@@ -59,10 +59,11 @@ const SidebarHeader = withRouter(props => {
 const Sidebar = withRouter(props => {
     const [contacts, setContacts] = useState([])
     const [userData, setUserData] = useState({})
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const currentUser = firebase.auth.currentUser
 
-    const getUser = async () => {
+    const getUser = useCallback(async () => {
         const db = firebase.db
         if (currentUser) {
             db.collection("users").doc(currentUser.uid).onSnapshot(doc => {
@@ -80,30 +81,33 @@ const Sidebar = withRouter(props => {
                 setContacts(final)
             })
         }
-    }
+    },[currentUser])
 
-    const updateUser = async ({status}) => {
+    const updateUser = useCallback(async (status) => {
         const db = firebase.db
         if(status){
             db.collection("users").doc(currentUser.uid).update({
                 status
             })
         }
-    }
+    },[currentUser])
 
     useEffect(() => {
         getUser() // eslint-disable-next-line
-    }, [])
+    }, [currentUser])
 
-    const handleClick = (e) => {
-        setAnchorEl(e.currentTarget);
-    };
+    const handleClick = useCallback((e) => {
+        setAnchorEl(e.currentTarget)
+    },[])
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const handleClose = useCallback(() => {
+        setAnchorEl(null)
+    },[])
 
-    const [anchorEl, setAnchorEl] = useState(null);
+    const handleLogout = useCallback(async () => { 
+        await firebase.logout()
+        props.history.push("/") 
+    },[props.history])
 
     return (
         <nav className="sidepanel">
@@ -138,10 +142,10 @@ const Sidebar = withRouter(props => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={handleClose}>My account</MenuItem> */}
                     <MenuItem onClick={props.toggleColorMode}>Toggle Dark/Light Mode</MenuItem>
-                    <MenuItem onClick={async () => {await firebase.logout(); props.history.push("/")}}>Logout</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
             </footer>
         </nav>

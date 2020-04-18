@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import firebase from "../firebase"
 import { NavLink } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
@@ -6,22 +6,21 @@ import { Avatar } from '@material-ui/core';
 const Contact = props => {
     const [contact, setContact] = useState()
     const [conversation, setConversation] = useState()
-    const recent = props.recent
 
-    const getContact = async () => {
+    const getContact = useCallback(async () => {
         const id = props.contact
         const db = firebase.db
         db.collection("users").doc(id).onSnapshot(snapshot => {
             setContact(snapshot.data())
         })
-    }
+    },[props])
 
-    const getConversation = async () => {
+    const getConversation = useCallback(async () => {
         firebase.db.collection("conversations").onSnapshot(snapshot => {
             const thisConv = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(conv => conv.members.includes(props.contact) && conv.members.includes(firebase.auth.currentUser.uid))[0]
             setConversation(thisConv)
         })
-    }
+    },[props])
 
     useEffect(() => {
         getContact()
@@ -38,9 +37,9 @@ const Contact = props => {
                     </div>
                     <div style={{display: "inline-block"}} className="meta">
                         <p className="display-name name">{contact.name}</p>
-                        {recent && <p className="preview">
-                            {recent?.sender === firebase?.auth?.currentUser?.uid && <span>You: </span>} 
-                            {recent?.attachments?.length === 0 ? recent?.body : "Picture"}
+                        {props.recent && <p className="preview">
+                            {props.recent?.sender === firebase?.auth?.currentUser?.uid && <span>You: </span>} 
+                            {props.recent?.attachments?.length === 0 ? props.recent?.body : "Picture"}
                         </p>}
                     </div>
                 </div>}

@@ -10,7 +10,8 @@ import { useCallback } from 'react';
 const MessageInput = props => {
     const [message, setMessage] = useState("")
     const [files, setFiles] = useState([])
-    const [previews, setPreviews] = useState()
+    // for displaying a preview of attachments that will be sent, comming soon
+    // const [previews, setPreviews] = useState()
     const [sending, setSending] = useState(false)
     const [open, setOpen] = useState(false)
 

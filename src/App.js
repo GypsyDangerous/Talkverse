@@ -7,20 +7,22 @@ import Home from './components/Home';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import Loader from "react-loader"
+import { useCallback } from 'react';
 
 function App() {
   const [isDark, setIsDark] = useState(false)
   const [firebaseInit, setFirebaseInit] = useState(false);
 
-  const toggleColorMode = () => {
+  const toggleColorMode = useCallback(() => {
     const not = !isDark
     setIsDark(mode => !mode)
     localStorage.setItem("color mode", not)
-  }
+  },[isDark])
 
   useEffect(() => {
     const mode = localStorage.getItem("color mode")
     setIsDark(mode === "true")
+      
   }, [])
 
   useEffect(() => {
@@ -28,7 +30,7 @@ function App() {
       const result = await firebase.isInitialized();
       setFirebaseInit(result)
     })()
-  })
+  }, [])
 
   return firebaseInit !== false ? (
     <Router>
@@ -41,7 +43,7 @@ function App() {
           </Switch>
         </main>
     </Router>
-  ) : <div className={`app ${isDark ? "app--dark" : ""}`}><Loader
+  ) : <main className={`app ${isDark ? "app--dark" : ""}`}><Loader
     loaded={false}
     lines={15}
     length={0}
@@ -61,7 +63,7 @@ function App() {
     left="50%"
     scale={3.0}
     loadedClassName="loadedContent"
-  /></div>
+  /></main>
 }
 
 export default App;
