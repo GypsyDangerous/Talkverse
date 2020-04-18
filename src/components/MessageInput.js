@@ -5,28 +5,28 @@ import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
 import Picker from 'emoji-picker-react';
 import firebase from "../firebase"
 import Tooltip from '@material-ui/core/Tooltip'
+import { useCallback } from 'react';
 
 const MessageInput = props => {
     const [message, setMessage] = useState("")
     const [files, setFiles] = useState([])
     const [previews, setPreviews] = useState()
     const [sending, setSending] = useState(false)
+    const [open, setOpen] = useState(false)
 
-    const InputHandler = e => {
+    const InputHandler = useCallback(e => {
         setMessage(e.target.value)
-    }
+    }, [setMessage])
 
-    const sendHandler = async e => {
+    const sendHandler = useCallback(async e => {
         e.preventDefault()
         if (sending) return
-
         if (files.length <= 0) {
             if (!message || message.length === 0) {
 
                 return
             }
         }
-        
         setSending(true)
         const sender = (await firebase.db.collection("users").doc(firebase.auth.currentUser.uid).get()).data()
 
@@ -38,7 +38,6 @@ const MessageInput = props => {
             mid: [...Array(10)].map(i => (Math.random() * 36 | 0).toString(36)).join(''),
             sentAt: Date.now()
         }
-
         setMessage("")
         setFiles([])
         setOpen(false)
@@ -48,12 +47,10 @@ const MessageInput = props => {
         await firebase.db.collection("conversations").doc(props.conversation.convid).update({
             newest: newMessage
         })
-        
         props.onSend()
-        
-    }
+    },[files, message, props, sending])
 
-    const filePickHandler = async e => {
+    const filePickHandler = useCallback(async e => {
         const file = e.target.files[0]
         if (file) {
             console.log(file.type)
@@ -63,29 +60,32 @@ const MessageInput = props => {
             const url = await fileRef.getDownloadURL()
             setFiles(f => [...f, {url, type:file.type}])
         }
-    }
+    },[])
 
-    const onEmojiClick = (event, emojiObject) => {
+    const onEmojiClick = useCallback((event, emojiObject) => {
         setMessage(msg => msg + emojiObject.emoji);
-    }
+    }, [])
 
-    const disableEnter = e => {
+    const disableEnter = useCallback(e => {
         if (e.keyCode === 13 && !e.shiftKey)
         {
             sendHandler(e)
         }
-    }
+    }, [sendHandler])
 
-    const [open, setOpen] = useState(false)
+
+    const toggleOpen = useCallback(() => setOpen(e => !e), [])
+
+    const closeHandler = useCallback(() => setOpen(false), [])
 
     return (
-        <ClickAwayListener onClickAway={() => setOpen(false)}>
+        <ClickAwayListener onClickAway={closeHandler}>
             <div className="message-input">
                 {open && <Picker onEmojiClick={onEmojiClick} />}
                 <form className="wrap" onSubmit={sendHandler}>
                     <textarea onKeyDown={disableEnter} dir="auto" rows="1" className="input" autoFocus type="text" onChange={InputHandler} value={message} placeholder="Write your message..." />
                     <Tooltip arrow title="Open Emoji Picker">
-                        <span className="attachment-container emoji-picker-button" onClick={() => setOpen(o => !o)}><span role="img" aria-label="emoji picker button">😀</span></span>
+                        <span className="attachment-container emoji-picker-button" onClick={toggleOpen}><span role="img" aria-label="emoji picker button">😀</span></span>
                     </Tooltip>
                     <input onChange={filePickHandler} id="attachment-loader" type="file" style={{ display: "none" }} />
                     <Tooltip arrow title="add an image">
