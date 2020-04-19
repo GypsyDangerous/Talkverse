@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import './App.css';
 import firebase from "./firebase"
 import { HashRouter as Router, Route, Redirect, Switch } from "react-router-dom"
@@ -8,10 +8,11 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import Loader from "react-loader"
 import { useCallback } from 'react';
+import {AppContext} from "./contexts/AppContext"
 
 function App() {
   const [isDark, setIsDark] = useState(false)
-  const [firebaseInit, setFirebaseInit] = useState(false);
+  const {firebaseInit, setFirebaseInit} = useContext(AppContext);
 
   const toggleColorMode = useCallback(() => {
     const not = !isDark
@@ -22,15 +23,8 @@ function App() {
   useEffect(() => {
     const mode = localStorage.getItem("color mode")
     setIsDark(mode === "true")
-      
   }, [])
 
-  useEffect(() => {
-    (async () => {
-      const result = await firebase.isInitialized();
-      setFirebaseInit(result)
-    })()
-  }, [])
 
   return firebaseInit !== false ? (
     <Router>
