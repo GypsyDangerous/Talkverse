@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import firebase from "./firebase"
-import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
+import { HashRouter as Router, Route, Redirect, Switch } from "react-router-dom"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Home from './components/Home';
 import LoginPage from './components/LoginPage';
