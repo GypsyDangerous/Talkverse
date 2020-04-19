@@ -1,14 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, createContext} from 'react';
 
+export const AppContext = createContext()
 
-
-
-
-export const AppContextProvider = () => {
+export const AppContextProvider = props => {
     return (
-        <div>
+        <AppContext.Provider>
             
-        </div>
+        </AppContext.Provider>
     );
 }
 
