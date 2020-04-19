@@ -3,14 +3,14 @@ import "firebase/auth"
 import "firebase/firebase-firestore"
 
 // helper function for using push notifications, will use later
-// const initMessaging = async () => {
-//     const messaging = app.messaging();
-//     try{
-//         await messaging.requestPermission()
-//     }catch(err){
-//         console.log(err.message)
-//     }
-// }
+const initMessaging = async () => {
+    const messaging = app.messaging();
+    try{
+        await messaging.requestPermission()
+    }catch(err){
+        console.log(err.message)
+    }
+}
 
 
 const firebaseConfig = {
@@ -33,6 +33,7 @@ class Firebase {
         this.app = app
         this.storage = app.storage()
         this.perf = app.performance()
+        initMessaging()
     }
 
     login(email, password) {
