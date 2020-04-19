@@ -1,3 +1,5 @@
+
+
 # TalkVerse
 
 https://www.talkverse.xyz
@@ -6,7 +8,7 @@ This is a fairly simple privating messaging similar to whats app or google's mes
 
 # Contributing
 
-Contributions are welcome, known bugs and features that need to be added can be found [here](https://github.com/GypsyDangerous/React-Chat-App/issues/1) 
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/GypsyDangerous/React-Chat-App/issues) 
 
 ## installation
 
