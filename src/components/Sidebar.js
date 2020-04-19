@@ -66,11 +66,11 @@ const Sidebar = withRouter(props => {
     const getUser = useCallback(async () => {
         const db = firebase.db
         if (currentUser) {
-            db.collection("users").doc(currentUser.uid).onSnapshot(doc => {
+            const unsubA = db.collection("users").doc(currentUser.uid).onSnapshot(doc => {
                 const userdata = { ...doc.data(), id: doc.id }
                 setUserData(userdata)
             })
-            db.collection("conversations").onSnapshot(async snapshot => {
+            const unsubB = db.collection("conversations").onSnapshot(async snapshot => {
                 const contacts = [].concat.apply([], snapshot.docs.map(doc => doc.data()).filter(doc => doc.members.includes(firebase.auth.currentUser.uid)).map(conv => {return {members: conv.members, newest: conv.newest}}))
                 let final = []
                 for (const contact of contacts.sort((b, a) => a.newest?.sentAt - b.newest?.sentAt)){
@@ -80,6 +80,10 @@ const Sidebar = withRouter(props => {
                 }
                 setContacts(final)
             })
+            return () => {
+                unsubA()
+                unsubB()
+            }
         }
     },[currentUser])
 

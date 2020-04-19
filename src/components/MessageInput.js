@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState, useRef} from 'react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ImageIcon from '@material-ui/icons/Image';
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
@@ -15,11 +15,14 @@ const MessageInput = props => {
     const [sending, setSending] = useState(false)
     const [open, setOpen] = useState(false)
 
+    const fileRef = useRef()
+
     const InputHandler = useCallback(e => {
         setMessage(e.target.value)
     }, [setMessage])
 
     const sendHandler = useCallback(async e => {
+
         e.preventDefault()
         if (sending) return
         if (files.length <= 0) {
@@ -88,9 +91,9 @@ const MessageInput = props => {
                     <Tooltip arrow title="Open Emoji Picker">
                         <span className="attachment-container emoji-picker-button" onClick={toggleOpen}><span role="img" aria-label="emoji picker button">😀</span></span>
                     </Tooltip>
-                    <input onChange={filePickHandler} id="attachment-loader" type="file" style={{ display: "none" }} />
+                    <input ref={fileRef} onChange={filePickHandler} id="attachment-loader" type="file" style={{ display: "none" }} />
                     <Tooltip arrow title="add an image">
-                        <label htmlFor="attachment-loader" className="attachment-container"><ImageIcon /></label>
+                        <span onClick={() => fileRef.current.click()} htmlFor="attachment-loader" className="attachment-container"><ImageIcon /></span>
                     </Tooltip>
                     <button type="submit" disabled={message.length <= 0 && files.length <= 0} className="submit"><SendTwoToneIcon /></button>
                 </form>

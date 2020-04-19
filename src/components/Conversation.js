@@ -16,9 +16,10 @@ const ConversationHeader = props => {
     const [recipient, setRecipient] = useState();
 
     useEffect(() => {
-        firebase.db.collection("users").doc(props?.convInfo || " ").onSnapshot(snapshot => {
+        const unsubscribe = firebase.db.collection("users").doc(props?.convInfo || " ").onSnapshot(snapshot => {
             setRecipient(snapshot.data())
         })
+        return unsubscribe
     }, [props]);
 
     return (
@@ -41,17 +42,21 @@ const Conversation = props => {
 
     useEffect(() => {
         if (props.isNew) {
-            firebase.db.collection("conversations").onSnapshot(async snapshot => {
+            const unsubA = firebase.db.collection("conversations").onSnapshot(async snapshot => {
                 const contacts = [].concat.apply([], snapshot.docs.map(doc => doc.data()).filter(doc => doc.members.includes(firebase.auth.currentUser.uid)).map(conv => conv.members))
                 setContacts(!contacts ? [] : contacts.filter(id => id !== firebase.auth.currentUser.uid))
             })
-            firebase.db.collection("users").onSnapshot(snapshot => {
+            const unsubB = firebase.db.collection("users").onSnapshot(snapshot => {
                 const users = snapshot.docs.map(doc => doc.data())
                 setSearchResults(users)
             })
+            return () => {
+                unsubA()
+                unsubB()
+            }
         }else{
             const id = (props.match.params.id)
-            firebase.db.collection("conversations").onSnapshot(async snapshot => {
+            const unsubscribe = firebase.db.collection("conversations").onSnapshot(async snapshot => {
                 try {
                     const mine = await snapshot.query.where(firebase.documentId(), "==", id).get()
                     const minedoc = mine.docs[0]
@@ -69,8 +74,9 @@ const Conversation = props => {
                     console.log(err.message)
                 }
             })
+            return unsubscribe
         }
-    }, [props])
+    }, [props.isNew, props.match.params.id])
 
     const createConv = useCallback(async uid => {
         const me = firebase?.auth?.currentUser?.uid

@@ -10,17 +10,19 @@ const Contact = props => {
     const getContact = useCallback(async () => {
         const id = props.contact
         const db = firebase.db
-        db.collection("users").doc(id).onSnapshot(snapshot => {
+        const unsubscribe = db.collection("users").doc(id).onSnapshot(snapshot => {
             setContact(snapshot.data())
         })
-    },[props])
+        return unsubscribe
+    },[props.contact])
 
     const getConversation = useCallback(async () => {
-        firebase.db.collection("conversations").onSnapshot(snapshot => {
+        const unsubscribe = firebase.db.collection("conversations").onSnapshot(snapshot => {
             const thisConv = snapshot.docs.map(doc => {return {...doc.data(), convid: doc.id}}).filter(conv => conv.members.includes(props.contact) && conv.members.includes(firebase.auth.currentUser.uid))[0]
             setConversation(thisConv)
         })
-    },[props])
+        return unsubscribe
+    },[props.contact])
 
     useEffect(() => {
         getContact()
