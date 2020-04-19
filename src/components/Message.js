@@ -88,7 +88,7 @@ const Message = ({ message, index, conversation, next }) => {
                 open={!!anchorEl}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                {message.sender === firebase?.auth?.currentUser?.uid && <MenuItem onClick={handleDelete}>Delete</MenuItem>}
                 <MenuItem onClick={handleClose}>
                     <CopyToClipboard text={message?.body}>
                         <span>Copy Text</span>
