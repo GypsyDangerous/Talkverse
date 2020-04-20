@@ -19,7 +19,7 @@ export const AppContextProvider = props => {
 
     useEffect(() => {
         if(firebaseInit !== false){
-            alert("hi")
+            console.log("hi")
             const unsub = firebase.db.collection("users").doc(firebase.auth.currentUser.uid).onSnapshot(doc => {
                 const userdata = { ...doc.data(), id: doc.id }
                 setUserData(userdata)
