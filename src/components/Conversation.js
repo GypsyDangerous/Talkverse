@@ -10,6 +10,7 @@ import MessageTwoToneIcon from '@material-ui/icons/MessageTwoTone';
 
 import MessageInput from "./MessageInput"
 import Message from "./Message"
+import { withRouter } from 'react-router'
 
 
 const ConversationHeader = props => {
@@ -81,8 +82,9 @@ const Conversation = props => {
     const createConv = useCallback(async uid => {
         const me = firebase?.auth?.currentUser?.uid
         const members = [me, uid]
-        await firebase.db.collection("conversations").add({ members })
-    },[])
+        const conv = await firebase.db.collection("conversations").add({ members })
+        props.history.push(conv.id)
+    },[props.history])
     
     return (
         <main className = "content">
@@ -143,4 +145,4 @@ const Conversation = props => {
 }
 
 
-export default Conversation;
+export default withRouter(Conversation);
