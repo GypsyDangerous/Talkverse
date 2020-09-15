@@ -14,15 +14,15 @@ const initMessaging = async () => {
 
 
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    databaseURL: process.env.REACT_APP_DATABASE_URL,
-    projectId: process.env.REACT_APP_PROJECTID,
-    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+    apiKey: "AIzaSyAkhlG-1wEOrBs9BWx0A4hqpaPr2FYhPj0",
+    authDomain: "chat-app-8b4e4.firebaseapp.com",
+    databaseURL: "https://chat-app-8b4e4.firebaseio.com",
+    projectId: "chat-app-8b4e4",
+    storageBucket: "chat-app-8b4e4.appspot.com",
     messagingSenderId: "675144009480",
-    appId: process.env.REACT_APP_APP_ID,
+    appId: "1:675144009480:web:c0d9da3a59178abb024ebd",
     measurementId: "G-VK4FYH6J07"
-};
+  };
 
 class Firebase {
     constructor(){
