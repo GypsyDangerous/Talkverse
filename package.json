@@ -22,6 +22,7 @@
     "react": "^16.13.0",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.0",
+    "react-firebase-hooks": "^2.2.0",
     "react-image-lightbox": "^5.1.1",
     "react-linkify": "^1.0.0-alpha",
     "react-loader": "^2.4.7",
