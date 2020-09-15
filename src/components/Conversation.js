@@ -11,6 +11,7 @@ import MessageTwoToneIcon from "@material-ui/icons/MessageTwoTone";
 import MessageInput from "./MessageInput";
 import Message from "./Message";
 import { useParams } from "react-router";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 const ConversationHeader = props => {
 	const [recipient, setRecipient] = useState();
@@ -42,8 +43,10 @@ const Conversation = props => {
 	const [search, setSearch] = useState("");
 	const [searchResults, setSearchResults] = useState([]);
 	const [contacts, setContacts] = useState([]);
-    const {id} = useParams()
+	const { id } = useParams();
 	const contentRef = useRef();
+
+	const [messageSnapshot, loading, error] = useCollection(firebase.db.collection("conversations"));
 
 	useEffect(() => {
 		if (props.isNew) {
@@ -66,13 +69,14 @@ const Conversation = props => {
 				unsubB();
 			};
 		} else {
-			const unsubscribe = firebase.db.collection("conversations").onSnapshot(async snapshot => {
+			(async () => {
 				try {
-					const mine = await snapshot.query.where(firebase.documentId(), "==", id).get();
+                    setMessages([])
+					const mine = await messageSnapshot.query.where(firebase.documentId(), "==", id).get();
 					const minedoc = mine.docs[0];
 					const me = { ...minedoc.data(), convid: minedoc.id };
 					setConv(me);
-					const convs = snapshot.docs.filter(doc => doc.id === me?.convid)[0];
+					const convs = messageSnapshot.docs.filter(doc => doc.id === me?.convid)[0];
 					convs.ref.collection("messages").onSnapshot(async msgSnapshot => {
 						const sorted = await msgSnapshot.query.orderBy("sentAt", "asc");
 						const sortedData = await sorted.get();
@@ -85,10 +89,9 @@ const Conversation = props => {
 				} catch (err) {
 					console.log(err.message);
 				}
-			});
-			return unsubscribe;
+			})();
 		}
-	}, [props.isNew, id]);
+	}, [props.isNew, messageSnapshot, id]);
 
 	const createConv = useCallback(async uid => {
 		const me = firebase?.auth?.currentUser?.uid;
@@ -102,8 +105,7 @@ const Conversation = props => {
 				<>
 					<ConversationHeader convInfo={other} />
 					<div ref={contentRef} className="messages">
-						<ul>
-							{" "}
+						{!loading && <ul>
 							{messages?.map((message, i) => (
 								<Message
 									message={message}
@@ -114,7 +116,7 @@ const Conversation = props => {
 									conversation={conv}
 								/>
 							))}
-						</ul>
+						</ul>}
 					</div>
 					<MessageInput onSend={() => (contentRef.current.scrollTop += 100000000000000)} conversation={conv} />
 				</>
