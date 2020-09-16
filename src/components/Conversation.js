@@ -48,6 +48,10 @@ const Conversation = props => {
 
 	const [messageSnapshot, loading, error] = useCollection(firebase.db.collection("conversations"));
 
+    useEffect(() => {
+        setMessages([])
+    }, [id])
+
 	useEffect(() => {
 		if (props.isNew) {
 			const unsubA = firebase.db.collection("conversations").onSnapshot(async snapshot => {
@@ -71,7 +75,7 @@ const Conversation = props => {
 		} else {
 			(async () => {
 				try {
-                    setMessages([])
+                    
 					const mine = await messageSnapshot.query.where(firebase.documentId(), "==", id).get();
 					const minedoc = mine.docs[0];
 					const me = { ...minedoc.data(), convid: minedoc.id };
@@ -105,20 +109,30 @@ const Conversation = props => {
 				<>
 					<ConversationHeader convInfo={other} />
 					<div ref={contentRef} className="messages">
-						{!loading && <ul>
-							{messages?.map((message, i) => (
-								<Message
-									message={message}
-									key={i}
-									previous={messages[Math.max(i - 1, 0)]}
-									next={messages[i + 1]}
-									index={i}
-									conversation={conv}
-								/>
-							))}
-						</ul>}
+						{!loading && (
+							<ul>
+								{messages?.map((message, i) => (
+									<Message
+										message={message}
+										key={i}
+										previous={messages[Math.max(i - 1, 0)]}
+										next={messages[i + 1]}
+										index={i}
+										conversation={conv}
+									/>
+								))}
+							</ul>
+						)}
 					</div>
-					<MessageInput onSend={() => (contentRef.current.scrollTop += 100000000000000)} conversation={conv} />
+					<MessageInput
+						onSend={() => {
+							contentRef.current.scrollTo({
+								top: contentRef.current.scrollHeight,
+								behavior: "smooth",
+							});
+						}}
+						conversation={conv}
+					/>
 				</>
 			)}
 			{props.isNew && (

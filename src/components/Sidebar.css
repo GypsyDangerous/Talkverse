@@ -365,6 +365,10 @@
   overflow-x: hidden;
 }
 
+#contacts > ul{
+    margin-bottom: 2rem;
+}
+
 .sidepanel #contacts.expanded {
   height: calc(100% - 334px);
 }
