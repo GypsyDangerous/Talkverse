@@ -1,4 +1,4 @@
-import React, { useState, useRef} from 'react'
+import React, { useState, useRef, useEffect} from 'react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ImageIcon from '@material-ui/icons/Image';
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
@@ -6,6 +6,7 @@ import Picker from 'emoji-picker-react';
 import firebase from "../firebase"
 import Tooltip from '@material-ui/core/Tooltip'
 import { useCallback } from 'react';
+import { useParams } from 'react-router';
 
 const MessageInput = props => {
     const [message, setMessage] = useState("")
@@ -14,6 +15,7 @@ const MessageInput = props => {
     // const [previews, setPreviews] = useState()
     const [sending, setSending] = useState(false)
     const [open, setOpen] = useState(false)
+    const {id} = useParams()
 
     const fileRef = useRef()
 
@@ -77,6 +79,9 @@ const MessageInput = props => {
         }
     }, [sendHandler])
 
+    useEffect(() => {
+        setMessage("")
+    }, [id])
 
     const toggleOpen = useCallback(() => setOpen(e => !e), [])
 

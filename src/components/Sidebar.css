@@ -365,12 +365,16 @@
   overflow-x: hidden;
 }
 
+#contacts > ul{
+    margin-bottom: 2rem;
+}
+
 .sidepanel #contacts.expanded {
   height: calc(100% - 334px);
 }
 
 .sidepanel #contacts::-webkit-scrollbar {
-  width: 80px;
+  width: 8px;
   background: var(--sidebar-color);
 }
 
