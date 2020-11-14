@@ -370,7 +370,7 @@
 }
 
 .sidepanel #contacts::-webkit-scrollbar {
-  width: 80px;
+  width: 8px;
   background: var(--sidebar-color);
 }
 

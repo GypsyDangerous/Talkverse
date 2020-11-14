@@ -33,12 +33,12 @@ const LoginPage = props => {
         firebase.auth.currentUser.updateProfile({
             displayName: user.displayName
         })
-        try{
+        try {
             await firebase.db.collection("users").doc(user.uid).update({
                 name: user.displayName,
                 uid: user.uid,
             })
-        }catch(err){
+        } catch (err) {
             await firebase.db.collection("users").doc(user.uid).set({
                 name: user.displayName,
                 uid: user.uid,
@@ -48,6 +48,7 @@ const LoginPage = props => {
         }
         props.history.push("/")
     },[props.history])
+
 
     if (firebase.auth.currentUser) {
         return <Redirect to="/"/>
